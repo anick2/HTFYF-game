@@ -2,7 +2,7 @@
 
 Семестровый проект по курсу "Совместная разработка на языке Python3"
 
-## How To Fight Your Fears
+## _How_ _To_ _Fight_ _Your_ _Fears_
 
 ### Описание
 
