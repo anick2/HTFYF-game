@@ -70,8 +70,6 @@ class Game:
             self.update()
         self.clock.tick(self.fps) 
         
-
-
 class State:
     def __init__(self):
         self.done     = False # состояние завершилось
@@ -94,8 +92,7 @@ class State:
     def set_prenex(self, pre, nex):
         self.next = nex;
         self.prev = pre;
-    
-
+        
 # класс для состояния "меню"
 class MainMenu(State):        
     def __init__(self):
@@ -182,17 +179,17 @@ class Park(State):          # класс для состояния "парк"
 def main():
     init()
     game = Game()
-    states = {"MAIN_MENU": MainMenu(),
+    stateDictionary = {"MAIN_MENU": MainMenu(),
               "FOREST": Forest(),
               "CITY": City(),
-              "PARK": Park()}                        # словарь состояний 
-    first_state = "MAIN_MENU"                        # начальное состояние
-    states["MAIN_MENU"].set_prenex(None, "FOREST")   # объявление состояний
-    states["FOREST"].set_prenex("MAIN_MENU", "CITY") 
-    states["CITY"].set_prenex("FOREST", "PARK")
-    states["PARK"].set_prenex("PARK", None)
-    game.setup_states(states, first_state)           # установка состояний
-    game.start()                                     # начало игры
+              "PARK": Park()}                          # словарь состояний 
+    first_state = "MAIN_MENU"                                 # начальное состояние
+    stateDictionary["MAIN_MENU"].set_prenex(None, "FOREST")   # объявление состояний
+    stateDictionary["FOREST"].set_prenex("MAIN_MENU", "CITY") 
+    stateDictionary["CITY"].set_prenex("FOREST", "PARK")
+    stateDictionary["PARK"].set_prenex("PARK", None)
+    game.setup_states(stateDictionary, first_state)           # установка состояний
+    game.start()                                              # начало игры
     
 if __name__ == '__main__':
     main()
