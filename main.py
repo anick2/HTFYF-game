@@ -1,12 +1,15 @@
 import sys
 import pygame
 import const as c
+import os
+import load
 
 def init():
-    global screen, screen_rect
+    global screen, screen_rect, IMAGES
     pygame.init()
     pygame.display.set_caption(c.CAPTION)
-    screen = pg.display.set_mode(c.SCREEN_SIZE)
+    screen = pygame.display.set_mode(c.SCREEN_SIZE)
+    IMAGES = load.load_graphics(os.path.join("sourses","images"))
     screen_rect = screen.get_rect()
 
 class Game:
@@ -14,7 +17,7 @@ class Game:
         self.screen = screen
         #self.clock = pygame.time.Clock()
         #self.current_time = 0.0
-        self.keys = pg.key.get_pressed()   
+        self.keys = pygame.key.get_pressed()
         self.done = False                   #конец игры
         self.fps = 60
         self.state_dict = {}                #словарь всевозможных состояний
@@ -29,10 +32,10 @@ class Game:
 
     def update(self):
         #self.current_time = pygame.time.get_ticks()
-        if self.state.quit:   
+        if self.state.quit:
             self.done = True
         elif self.state.done:
-            self.flip_state()           
+            self.flip_state()
         self.state.update(self.screen, self.keys, self.current_time)
 
     def flip_state(self):
@@ -42,18 +45,30 @@ class Game:
         self.state = self.state_dict[self.state_name]
         self.state.startup(self.current_time, persist)
         self.state.previous = previous
-
+    
     def event_loop(self):
         for event in pygame.event.get():
             '''нужно написать обработку событий'''
-            
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                sys.exit()
+                self = False
 
-    def start():
+            if event.type == pygame.KEYDOWN:
+                if event.key == ord('q'):
+                    pygame.quit()
+                    sys.exit()
+                    self = False
+                      
+    def start(self):
         '''mainloop'''
         while not self.done:
             self.event_loop()
-            '''и что-то еще'''
+            pygame.display.flip()
+            screen.blit(IMAGES["menu"], screen_rect)
+        self.clock.tick(self.fps)
         
+
 
 class _State(object):
     def __init__(self):
@@ -79,43 +94,12 @@ class _State(object):
     def update(self, surface, keys, current_time):
         pass
 
-
-"""
-#базовый класс состояний
-class GameMode:
-    '''Basic game mode'''
-    def __init__(self):
-        '''Set game mode up
-        - Inittialize black background'''
-        self.background = pygame.Color("black")
-
-    def Events(self,event):
-        '''Event parser'''
-        pass
-
-    def Draw(self, screen):
-        '''Draw game field'''
-        screen.fill(self.background)
-
-    def Logic(self, screen):
-        '''Game logic: what to calculate'''
-        pass
-
-    def Leave(self):
-        '''What to do when leaving this mode'''
-        pass
-
-    def Init(self):
-        '''What to do when entering this mode'''
-        pass
-"""
-
 def main():
     init()
     game = Game()
     states = {} # словаь состояний {"MAIN_MENU": MainMenu()}
-    first_state = "MAIN_MENU"
-    game.setup_states(states, first_state)
+    #first_state = "MAIN_MENU"
+    #game.setup_states(states, first_state)
     game.start()
     
 if __name__ == '__main__':
