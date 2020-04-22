@@ -81,7 +81,7 @@ class _State(object):
 
 
 """
-#базовый класс состояний (взято у Курячего)
+#базовый класс состояний
 class GameMode:
     '''Basic game mode'''
     def __init__(self):
