@@ -5,11 +5,13 @@ import os
 import load
 
 def init():
-    global screen, screen_rect, IMAGES
+    global screen, screen_rect, IMAGES, start_button, continue_button, quit_button
     pygame.init()
     pygame.display.set_caption(c.CAPTION)
     screen = pygame.display.set_mode(c.SCREEN_SIZE)
-    IMAGES = load.load_graphics(os.path.join("sourses","images"))
+    IMAGES = load.load_graphics(os.path.join("sources","images"))
+    #start_button = pygame.draw.rect(screen,(0,0,240),(150,90,100,50));
+    #continue_button = pygame.draw.rect(screen,(0,244,0),(150,160,100,50));
     screen_rect = screen.get_rect()
 
 class Game:
@@ -59,6 +61,13 @@ class Game:
                     pygame.quit()
                     sys.exit()
                     self = False
+
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                if pygame.mouse.get_pos()[0] >= 500 and pygame.mouse.get_pos()[1] >= 300:
+                    if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 350:
+                        pygame.quit()
+                        sys.exit()
+                        self = False
                       
     def start(self):
         '''mainloop'''
@@ -66,6 +75,7 @@ class Game:
             self.event_loop()
             pygame.display.flip()
             screen.blit(IMAGES["menu"], screen_rect)
+            pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
         self.clock.tick(self.fps)
         
 
