@@ -1,6 +1,7 @@
 import pygame
 import os
 
+'''
 def load_graphics(directory):
     graphics = {}
     for pic in os.listdir(directory):
@@ -9,3 +10,4 @@ def load_graphics(directory):
         img = img.convert()
         graphics[name]=img
     return graphics
+'''
