@@ -7,5 +7,5 @@ SCREEN_SIZE = WIDTH, HEIGHT
 
 CAPTION = "HowToFightYourFears"
 
-IMAGES = load_graphics(os.path.join("sources","images"))
+IMAGES = load.load_graphics(os.path.join("sources","images"))
 
