@@ -17,7 +17,7 @@ class Game:
         self.screen = screen
         #self.clock = pygame.time.Clock()
         #self.current_time = 0.0
-        self.keys = pygame.key.get_pressed()
+        #self.keys = pg.key.get_pressed()   
         self.done = False                   #конец игры
         self.fps = 60
         self.state_dict = {}                #словарь всевозможных состояний

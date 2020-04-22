@@ -7,3 +7,4 @@ HEIGHT = 720
 SCREEN_SIZE = WIDTH, HEIGHT
 
 CAPTION = "HowToFightYourFears"
+
