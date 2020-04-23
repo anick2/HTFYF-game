@@ -1,15 +1,20 @@
 import sys
 import pygame
+from pygame.locals import *
 import const as c
 import os
 import load
 
+COLOR_RED = (255,0,0)
+COLOR_BLACK = (255,255,255)
+
 def init():
-    global screen, screen_rect, IMAGES, start_button, continue_button, quit_button
+    global screen, screen_rect, IMAGES, start_button, continue_button, quit_button, border_color
     pygame.init()
     pygame.display.set_caption(c.CAPTION)
-    screen = pygame.display.set_mode(c.SCREEN_SIZE)
+    screen = pygame.display.set_mode(c.SCREEN_SIZE, HWSURFACE | DOUBLEBUF | RESIZABLE)
     IMAGES = load.load_graphics(os.path.join("sources","images"))
+    border_color = (0,0,0)
     #start_button = pygame.draw.rect(screen,(0,0,240),(150,90,100,50));
     #continue_button = pygame.draw.rect(screen,(0,244,0),(150,160,100,50));
     screen_rect = screen.get_rect()
@@ -17,11 +22,11 @@ def init():
 class Game:
     def __init__(self):
         self.screen = screen
-        #self.clock = pygame.time.Clock()
+        self.clock = pygame.time.Clock()
         #self.current_time = 0.0
         #self.keys = pg.key.get_pressed()   
         self.done = False                   #конец игры
-        self.fps = 60
+        self.fps = 7
         self.state_dict = {}                #словарь всевозможных состояний
         self.state_name = None              #имя текущего состояния
         self.state = None                   #объект класса текущего состояния
@@ -51,6 +56,13 @@ class Game:
     def event_loop(self):
         for event in pygame.event.get():
             '''нужно написать обработку событий'''
+            if event.type == pygame.MOUSEMOTION:
+                if pygame.Rect(450,350,100,50).collidepoint(event.pos[0] - 450,
+                                event.pos[1] - 350):
+                    border_color = COLOR_RED
+                else:
+                    border_color = COLOR_BLACK
+
             if event.type == pygame.QUIT:
                 pygame.quit()
                 sys.exit()
@@ -61,22 +73,33 @@ class Game:
                     pygame.quit()
                     sys.exit()
                     self = False
+            if event.type == VIDEORESIZE:
+                screen = pygame.display.set_mode(
+                event.dict['size'], HWSURFACE | DOUBLEBUF | RESIZABLE)
+                screen.blit(pygame.transform.scale(IMAGES["fon"], event.dict['size']), (0, 0))
+                pygame.display.flip()
 
             if event.type == pygame.MOUSEBUTTONDOWN:
-                if pygame.mouse.get_pos()[0] >= 500 and pygame.mouse.get_pos()[1] >= 300:
-                    if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 350:
+                if pygame.mouse.get_pos()[0] >= 450 and pygame.mouse.get_pos()[1] >= 350:
+                    if pygame.mouse.get_pos()[0] <= 550 and pygame.mouse.get_pos()[1] <= 400:
                         pygame.quit()
                         sys.exit()
                         self = False
                       
     def start(self):
         '''mainloop'''
+        i = 0
         while not self.done:
             self.event_loop()
+            imag = "fon" + str(i)
+            screen.blit(pygame.transform.scale(IMAGES[imag], c.SCREEN_SIZE), screen_rect)
+            #button_surf = pygame.transform.scale(IMAGES["button"], (100,50))
+            #button_rect = button_surf.get_rect()
+            #screen.blit(button_surf, (450,350))
+            pygame.draw.rect(screen,border_color,(450,350,100,50));
             pygame.display.flip()
-            screen.blit(IMAGES["menu"], screen_rect)
-            pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
-        self.clock.tick(self.fps)
+            self.clock.tick(self.fps)
+            i = (i+1) % 8
         
 
 
