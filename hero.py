@@ -50,7 +50,7 @@ class Hero(pygame.sprite.Sprite):
         self.all_images = [left_walking, right_walking, left_fighting, right_fighting]
 
 
-    def update(self, keys, game_info, fire_group):    
+    def update(self, keys, fire_group):    
         self.handle_state(keys, fire_group)
         self.animation()
 

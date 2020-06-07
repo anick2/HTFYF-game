@@ -10,7 +10,7 @@ from init import *
 class Game:
     def __init__(self):
         self.screen = screen
-        #self.keys = pg.key.get_pressed()   
+        self.keys = pygame.key.get_pressed()   
         self.done = False                   #конец игры
         self.fps = 60
         self.state_dict = {}                #словарь всевозможных состояний
@@ -26,7 +26,7 @@ class Game:
     def update(self):
         if self.state.done:
             self.flip_state()
-        self.state.on_update()
+        self.state.on_update(self.keys)
 
     def flip_state(self):
         # смена состояний
@@ -43,6 +43,7 @@ class Game:
                 self = False
 
             if event.type == pygame.KEYDOWN:
+                self.keys = pg.key.get_pressed()
                 if event.key == ord('q'):
                     pygame.quit()
                     sys.exit()
