@@ -12,3 +12,10 @@ def load_graphics(directory):
             img = img.convert()
             graphics[name] = img
     return graphics
+
+
+
+def get_graphics():
+    global IMAGES
+    IMAGES = load_graphics(os.path.join("sources","images"))
+    

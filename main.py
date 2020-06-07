@@ -3,16 +3,11 @@ import pygame
 import const as c
 import os
 import load
-
-def init():
-    global screen, screen_rect, IMAGES, start_button, continue_button, quit_button
-    pygame.init()
-    pygame.display.set_caption(c.CAPTION)
-    screen = pygame.display.set_mode(c.SCREEN_SIZE)
-    IMAGES = load.load_graphics(os.path.join("sources","images"))
-    #start_button = pygame.draw.rect(screen,(0,0,240),(150,90,100,50));
-    #continue_button = pygame.draw.rect(screen,(0,244,0),(150,160,100,50));
-    screen_rect = screen.get_rect()
+from forest import *
+from city import *
+from state import *
+from init import *
+from park import *
 
 class Game:
     def __init__(self):
@@ -71,29 +66,6 @@ class Game:
         self.clock.tick(self.fps) 
         
 
-
-class State:
-    def __init__(self):
-        self.done     = False # состояние завершилось
-        self.next     = None  # следубщее состояние
-        self.prev     = None  # предудущее состояние
-
-    # запускается при создании
-    def on_create(self):
-        pass
-
-    # запускается @fps раз в секунду для обновления
-    def on_update(self):
-        pass
-
-    # запускается для отлова ивентов
-    def get_event(self, event):
-        pass
-
-    # задаем соседние состояния
-    def set_prenex(self, pre, nex):
-        self.next = nex;
-        self.prev = pre;
     
 
 # класс для состояния "меню"
@@ -118,30 +90,8 @@ class MainMenu(State):
             if pygame.mouse.get_pos()[0] >= 500 and pygame.mouse.get_pos()[1] >= 300:
                 if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 350:
                     self.done = True
-    
-# класс для состояния "лес"
-class Forest(State):          
-    def __init__(self):
-        State.__init__(self)
-        self.on_create();   
-        
-    def on_create(self):      
-        pygame.display.flip()
-        screen.blit(IMAGES["forest"], screen_rect)
-        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
 
-    def on_update(self):
-        pygame.display.flip()
-        screen.blit(IMAGES["forest"], screen_rect)
-        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
 
-    def get_event(self, event):
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pos()[0] >= 600 and pygame.mouse.get_pos()[1] >= 300:
-                if pygame.mouse.get_pos()[0] <= 700 and pygame.mouse.get_pos()[1] <= 350:
-                    self.done = True
-
-# класс для состояния "город"
 class City(State):          
     def __init__(self):
         State.__init__(self)
@@ -163,24 +113,8 @@ class City(State):
                 if pygame.mouse.get_pos()[0] <= 500 and pygame.mouse.get_pos()[1] <= 350:
                     self.done = True
 
-class Park(State):          # класс для состояния "парк"
-    def __init__(self):
-        State.__init__(self)
-        self.on_create();   
-        
-    def on_create(self):      
-        pygame.display.flip()
-        screen.blit(IMAGES["park"], screen_rect)
-
-    def on_update(self):
-        pygame.display.flip()
-        screen.blit(IMAGES["park"], screen_rect)
-
-    def get_event(self, event):
-        pass
 
 def main():
-    init()
     game = Game()
     states = {"MAIN_MENU": MainMenu(),
               "FOREST": Forest(),
