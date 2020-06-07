@@ -13,6 +13,7 @@ class Hero(pygame.sprite.Sprite):
         self.allow_jump = True
         self.allow_hit = True
         self.frame_index = 0
+
         
         self.load_images()
 
@@ -44,6 +45,7 @@ class Hero(pygame.sprite.Sprite):
             new_image = pg.transform.flip(image, True, False)
             self.left_fighting.append(new_image)
 
+
         self.right_frames = self.normal_small_frames[0]
         self.left_frames = self.normal_small_frames[1]
 
@@ -51,6 +53,7 @@ class Hero(pygame.sprite.Sprite):
 
 
     def update(self, keys, fire_group):    
+
         self.handle_state(keys, fire_group)
         self.animation()
 
@@ -91,7 +94,8 @@ class Hero(pygame.sprite.Sprite):
             
         elif keys['K_w']:
             if self.allow_jump:
-                    setup.SFX['small_jump'].play()
+                #setup.SFX['jump'].play()
+
                 self.state = "JUMP"
                 self.y_vel = c.JUMP_VEL
         else:
@@ -115,13 +119,16 @@ class Hero(pygame.sprite.Sprite):
 
         if self.frame_index == 0:
             self.frame_index += 1
+
+            self.walking_timer = self.current_time
         else:
-            if (self.current_time - self.walking_timer >
-                    self.calculate_animation_speed()):
+            if (self.current_time - self.walking_timer > self.calculate_animation_speed()):
+
                 if self.frame_index < 2:
                     self.frame_index += 1
                 else:
                     self.frame_index = 0
+
 
                # self.walking_timer = self.current_time
 
@@ -136,10 +143,9 @@ class Hero(pygame.sprite.Sprite):
 
         if keys['K_w']:                     #jump
             if self.allow_jump:
-                if self.big:
-                    setup.SFX['big_jump'].play()
-                else:
-                    setup.SFX['small_jump'].play()
+
+                #setup.SFX['jump'].play()
+
                 self.state = "JUMP"
                 if self.x_vel > 4.5 or self.x_vel < -4.5:
                     self.y_vel = c.JUMP_VEL - .5
@@ -185,32 +191,37 @@ class Hero(pygame.sprite.Sprite):
                     self.x_vel -= self.x_accel
                 else:
                     self.x_vel = 0
-                    self.state = c.STAND
+
+                    self.state = "STAND"
+
             else:
                 if self.x_vel < 0:
                     self.x_vel += self.x_accel
                 else:
                     self.x_vel = 0
-                    self.state = c.STAND
+
+                    self.state = "STAND"
+
 
 
     def shoot_fireball(self, powerup_group):
     
-        setup.SFX['fireball'].play()
+
+        #setup.SFX['fireball'].play()
         self.fireball_count = self.count_number_of_fireballs(powerup_group)
 
-        if (self.current_time - self.last_fireball_time) > 200:
+        if (self.current_time - self.last_hit_time) > 200:
             if self.fireball_count < 2:
                 self.allow_hit = False
-                powerup_group.add(
-                    powerups.FireBall(self.rect.right, self.rect.y, self.facing_right))
-                self.last_fireball_time = self.current_time
+                #powerup_group.add(powerups.FireBall(self.rect.right, self.rect.y, self.facing_right))
+                self.last_hit_time = self.current_time
 
                 self.frame_index = 6
                 if self.facing_right:
-                    self.image = self.right_frames[self.frame_index]
+                    self.image = self.right_fighting[0]
                 else:
-                    self.image = self.left_frames[self.frame_index]
+                    self.image = self.left_left_fighting[0]
+
 
 
 
@@ -239,7 +250,9 @@ class Hero(pygame.sprite.Sprite):
             self.state = c.FALL
 
         if keys['K_SPACE']:
-            if self.fire and self.allow_hit:
+
+            if self.allow_hit:
+
                 self.shoot_fireball(fire_group)
 
 
@@ -270,4 +283,7 @@ class Hero(pygame.sprite.Sprite):
             self.image = self.left_frames[self.frame_index]
 
 
-            
+     def calculate_animation_speed(self):
+         pass
+    
+
