@@ -15,7 +15,7 @@ class Park(State):          # класс для состояния "парк"
         pygame.display.flip()
         screen.blit(IMAGES["park"], screen_rect)
 
-    def on_update(self):
+    def on_update(self, keys):
         pygame.display.flip()
         screen.blit(IMAGES["park"], screen_rect)
 

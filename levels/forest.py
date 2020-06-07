@@ -5,8 +5,8 @@ from .state import *
 sys.path.append('..')
 
 from init import *
-import hero 
-
+#import hero 
+from sprites import * 
 
 # класс для состояния "лес"
 class Forest(State):          
@@ -37,13 +37,14 @@ class Forest(State):
         self.set_enemies()
         self.set_checkpoints()
 
-    def set_hero():
-        self.hero = hero.Hero()
+    def set_hero(self):
+        '''self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
-        self.hero.rect.bottom = c.HEIGHT_OF_GROUND
+        self.hero.rect.bottom = c.HEIGHT_OF_GROUND'''
+        pass
 
     def set_blocks(self):
-        pass
+        ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 60)
 
     def set_enemies(self):
         pass
@@ -59,7 +60,7 @@ class Forest(State):
 
 
     def update_everything(self, keys):
-        self.hero.update(keys, self.powerup_group)
+       # self.hero.update(keys, self.powerup_group)
         self.check_cp()
         
     def blit_everything(self):

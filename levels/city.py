@@ -16,7 +16,7 @@ class City(State):
         screen.blit(IMAGES["city"], screen_rect)
         pygame.draw.rect(screen,(255,255,255),(400,300,100,50));
 
-    def on_update(self):
+    def on_update(self, keys):
         pygame.display.flip()
         screen.blit(IMAGES["city"], screen_rect)
         pygame.draw.rect(screen,(255,255,255),(400,300,100,50));

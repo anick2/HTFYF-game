@@ -11,7 +11,7 @@ class State:
         pass
 
     # запускается @fps раз в секунду для обновления
-    def on_update(self):
+    def on_update(self, keys):
         pass
 
     # запускается для отлова ивентов
