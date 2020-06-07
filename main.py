@@ -1,13 +1,11 @@
 import sys
 import pygame
 import const as c
-import os
-import load
-from forest import *
-from city import *
-from state import *
+from levels.forest import *
+from levels.city import *
+from levels.state import *
+from levels.park import *
 from init import *
-from park import *
 
 class Game:
     def __init__(self):

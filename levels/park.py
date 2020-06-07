@@ -1,5 +1,9 @@
+import sys
 import pygame
-from state import *
+from .state import *
+
+sys.path.append('..')
+
 from init import *
 
 class Park(State):          # класс для состояния "парк"
