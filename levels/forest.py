@@ -47,6 +47,8 @@ class Forest(State):
     def set_blocks(self):
         ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
 
+        
+        block0 = Block(150, 500)
         block1 = Block(0, 560)
         block2 = Block(40, 560)
         block3 = Block(80, 560)
@@ -73,7 +75,7 @@ class Forest(State):
         block28 = Block(920, 560)
         block29 = Block(960, 560)
 
-        self.blocks = pygame.sprite.Group(block1, block2, block3,
+        self.blocks = pygame.sprite.Group(block0, block1, block2, block3,
                                           block4, block5, block6,
                                           block7, block8, block9,
                                           block12, block13,
@@ -116,7 +118,7 @@ class Forest(State):
         self.x_collisions_hero()
 
         self.hero.rect.y += round(self.hero.y_vel)
-        #self.y_collisions_hero()
+        self.y_collisions_hero()
 
         if self.hero.rect.x < (self.viewport.x + 5):
             self.hero.rect.x = (self.viewport.x + 5)
@@ -135,6 +137,17 @@ class Forest(State):
             self.hero.rect.right = collider.rect.left
         else:
             self.hero.rect.left = collider.rect.right
+
+
+    def y_collisions_hero(self):
+        bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        
+        if bricks:
+            self.hero.rect.bottom = bricks.rect.top
+            self.hero.state = "WALK"
+            self.hero.y_vel = 0
+
+
 
         
     def blit_everything(self):

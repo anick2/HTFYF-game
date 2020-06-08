@@ -182,6 +182,12 @@ class Hero(pygame.sprite.Sprite):
 
         elif keys[pygame.K_d]:
             self.facing_right = True
+            if self.x_vel < self.max_x_vel:
+                self.x_vel += self.x_accel
+                if self.x_vel < 0.5:
+                    self.x_vel = 0.5
+            elif self.x_vel > self.max_x_vel:
+                self.x_vel -= self.x_accel
 
         elif keys[pygame.K_w]:
             if self.x_vel < self.max_x_vel:
