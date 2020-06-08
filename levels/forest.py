@@ -6,15 +6,13 @@ sys.path.append('..')
 
 from init import *
 import hero 
-from sprites import * 
+from sprites import *
+from sounds import *
 
 # класс для состояния "лес"
 class Forest(State):          
     def __init__(self):
         State.__init__(self)
-        self.on_create();
-        
-        self.set_background()
 
     def set_background(self):
         self.background = IMAGES['forest']
@@ -32,7 +30,7 @@ class Forest(State):
         
         
     def on_create(self):      
-        pygame.display.flip()
+        self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
         self.set_blocks()
@@ -46,8 +44,13 @@ class Forest(State):
         pass
 
     def set_blocks(self):
-        self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 60)
-        self.level.blit(self.ground.image, (10,10))
+        self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
+
+        block1 = Block(100, 100)
+        block2 = Block(140, 100)
+
+        self.blocks = pygame.sprite.Group(block1, block2)
+        
 
     def set_enemies(self):
         pass
@@ -64,12 +67,14 @@ class Forest(State):
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.check_cp()
+
         
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-        self.level.blit(self.ground.image, (0,540))
-        self.level.blit(self.hero.image, (self.hero.pos_x,340))
+        self.level.blit(self.ground.image, (0,560))
+        self.level.blit(self.hero.image, (self.hero.pos_x,430))
+        self.blocks.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         pass

@@ -1,5 +1,6 @@
 import pygame
 import const
+from init import *
 
 
 class Barrier(pygame.sprite.Sprite):
@@ -13,9 +14,19 @@ class Barrier(pygame.sprite.Sprite):
         self.rect.y = y
 
 
-class Brick(pygame.sprite.Sprite):
+class Block(pygame.sprite.Sprite):
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
+        self.state = None
+        
+        img = pygame.transform.scale(IMAGES['block_forest'], c.BLOCK_SIZE)     
+        self.image = pygame.Surface(c.BLOCK_SIZE).convert()
+        self.image.set_colorkey((0,0,0))
+        self.image.blit(img, (0, 0))
+        
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
 
 
 
