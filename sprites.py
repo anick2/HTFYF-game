@@ -11,7 +11,7 @@ class Barrier(pygame.sprite.Sprite):
         self.image.fill((0, 255, 0))            #green
         self.rect = self.image.get_rect()
         self.rect.x = x
-        self.rect.y = y
+        self.rect.y = 600 - y
 
 
 class Block(pygame.sprite.Sprite):

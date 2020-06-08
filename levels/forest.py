@@ -47,10 +47,41 @@ class Forest(State):
     def set_blocks(self):
         ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
 
-        block1 = Block(400, 500)
-        block2 = Block(140, 100)
+        block1 = Block(0, 560)
+        block2 = Block(40, 560)
+        block3 = Block(80, 560)
+        block4 = Block(120, 560)
+        block5 = Block(160, 560)
+        block6 = Block(200, 560)
+        block7 = Block(240, 560)
+        block8 = Block(280, 560)
+        block9 = Block(320, 560)
+        block12 = Block(360, 560)
+        block13 = Block(400, 560)
+        block14 = Block(440, 560)
+        block15 = Block(480, 560)
+        block16 = Block(520, 560)
+        block17 = Block(560, 560)
+        block18 = Block(600, 560)
+        block19 = Block(640, 560)
+        block22 = Block(680, 560)
+        block23 = Block(720, 560)
+        block24 = Block(760, 560)
+        block25 = Block(800, 560)
+        block26 = Block(840, 560)
+        block27 = Block(880, 560)
+        block28 = Block(920, 560)
+        block29 = Block(960, 560)
 
-        self.blocks = pygame.sprite.Group(block1, block2, ground)
+        self.blocks = pygame.sprite.Group(block1, block2, block3,
+                                          block4, block5, block6,
+                                          block7, block8, block9,
+                                          block12, block13,
+                                          block14, block15, block16,
+                                          block17, block18, block19,
+                                          block22, block23,
+                                          block24, block25, block26,
+                                          block27, block28, block29)
         
 
     def set_enemies(self):
@@ -63,6 +94,7 @@ class Forest(State):
     def on_update(self, keys):
         self.update_everything(keys)
         self.blit_everything()
+        self.update_viewport()
 
 
     def update_everything(self, keys):
@@ -124,3 +156,15 @@ class Forest(State):
             if pygame.mouse.get_pos()[0] >= 600 and pygame.mouse.get_pos()[1] >= 300:
                 if pygame.mouse.get_pos()[0] <= 700 and pygame.mouse.get_pos()[1] <= 350:
                     self.done = True
+
+
+    def update_viewport(self):
+        third = self.viewport.x + self.viewport.w//3
+        play_center = self.hero.rect.centerx
+        play_right = self.hero.rect.right
+
+        if self.hero.x_vel > 0 and play_center >= third:
+            mult = 0.5 if play_right < self.viewport.centerx else 1
+            new = self.viewport.x + mult * self.hero.x_vel
+            highest = self.level_rect.w - self.viewport.w
+            self.viewport.x = min(highest, new)
