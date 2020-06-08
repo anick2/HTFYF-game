@@ -11,17 +11,36 @@ from init import *
 class MainMenu(State):        
     def __init__(self):
         State.__init__(self)
-        self.on_create();     
+        self.on_create();
 
     def on_create(self):
+        self.image = pygame.Surface(c.SCREEN_SIZE).convert()
+        self.background = []
+        self.clock = 0
         pygame.display.flip()
         #изображение:
-        screen.blit(IMAGES["menu"], screen_rect)
+        for i in range(1, 7):
+            img = pygame.transform.scale(IMAGES["main_bg" + str(i)], c.SCREEN_SIZE)                       
+            self.background.append(img)
+        self.background_index = 0;
+        self.clock = 1
+        self.image.blit(IMAGES["main_bg1"], (0, 0))
+        screen.blit(self.image, (0, 0))
         pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
 
     def on_update(self, keys):
         pygame.display.flip()
-        screen.blit(IMAGES["menu"], screen_rect)
+        if self.clock == 25:
+            if self.background_index < 5:
+                self.background_index += 1
+            else:
+                self.background_index = 0
+            self.clock = 0
+        else:
+            self.clock += 1
+
+        self.image.blit(self.background[self.background_index], (0, 0))
+        screen.blit(self.image, (0, 0))
         pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
 
     def get_event(self, event):
