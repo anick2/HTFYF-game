@@ -21,6 +21,7 @@ class Hero(pygame.sprite.Sprite):
         
         img = self.right_frames[self.frame_index]
         self.image = pygame.Surface((150, 200)).convert()
+        self.image.set_colorkey((0,0,0))
         self.image_rect = self.image.get_rect()
         self.image.blit(img, (0, 0))
 
@@ -37,8 +38,9 @@ class Hero(pygame.sprite.Sprite):
         self.left_fighting = []
         self.right_fighting = []
 
-        for i in range(1, 9):        
-            self.right_walking.append(pygame.transform.scale(IMAGES["walk" + str(i)], (150, 200)))
+        for i in range(1, 9):
+            img = pygame.transform.scale(IMAGES["walk" + str(i)], (150, 200))                       
+            self.right_walking.append(img)
 
 
         self.right_fighting.append(IMAGES["hit1"])
