@@ -75,7 +75,6 @@ class Forest(State):
         block28 = Block(920, 560)
         block29 = Block(960, 560)
 
-<<<<<<< HEAD
         block31 = Block(1000, 560)
         block32 = Block(1040, 560)
         block33 = Block(1080, 560)
