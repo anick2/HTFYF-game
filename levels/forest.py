@@ -5,7 +5,7 @@ from .state import *
 sys.path.append('..')
 
 from init import *
-#import hero 
+import hero 
 from sprites import * 
 
 # класс для состояния "лес"
@@ -26,8 +26,10 @@ class Forest(State):
         self.level_rect = self.level.get_rect()
         self.viewport = screen.get_rect(bottom=self.level_rect.bottom)
         
-        self.level.blit(self.background, self.viewport, self.viewport)
+        self.level.blit(self.background, (0, 0))
         screen.blit(self.level, (0,0), self.viewport)
+        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
+        
         
     def on_create(self):      
         pygame.display.flip()
@@ -38,13 +40,14 @@ class Forest(State):
         self.set_checkpoints()
 
     def set_hero(self):
-        '''self.hero = hero.Hero()
+        self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
-        self.hero.rect.bottom = c.HEIGHT_OF_GROUND'''
+        self.hero.rect.bottom = c.HEIGHT_OF_GROUND
         pass
 
     def set_blocks(self):
-        ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 60)
+        self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 60)
+        self.level.blit(self.ground.image, (10,10))
 
     def set_enemies(self):
         pass
@@ -54,16 +57,21 @@ class Forest(State):
         pass
 
     def on_update(self, keys):
-        pygame.display.flip()
         self.update_everything(keys)
         self.blit_everything()
 
 
     def update_everything(self, keys):
-       # self.hero.update(keys, self.powerup_group)
+        self.hero.update(keys, {})
         self.check_cp()
         
     def blit_everything(self):
+        pygame.display.flip()
+        self.level.blit(self.background, self.viewport, self.viewport)
+        self.level.blit(self.ground.image, (0,540))
+        self.level.blit(self.hero.image, (self.hero.pos_x,340))
+        screen.blit(self.level, (0,0), self.viewport)
+        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         pass
 
     def check_cp(self):
