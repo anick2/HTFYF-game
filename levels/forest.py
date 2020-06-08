@@ -40,7 +40,8 @@ class Forest(State):
     def set_hero(self):
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
-        self.hero.rect.bottom = c.HEIGHT_OF_GROUND
+        self.hero.rect.bottom = 560
+        self.pers = pygame.sprite.Group(self.hero)
         pass
 
     def set_blocks(self):
@@ -49,7 +50,7 @@ class Forest(State):
         block1 = Block(100, 100)
         block2 = Block(140, 100)
 
-        self.blocks = pygame.sprite.Group(block1, block2)
+        self.blocks = pygame.sprite.Group(block1, block2, block3)
         
 
     def set_enemies(self):
@@ -67,14 +68,35 @@ class Forest(State):
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.check_cp()
+        self.adjust_sprite_positions()
+
+
+    def adjust_sprite_positions(self):
+        """Adjusts sprites by their x and y velocities and collisions"""
+        self.adjust_mario_position()
+
+        
+    def adjust_mario_position(self):
+        """Adjusts Mario's position based on his x, y velocities and
+        potential collisions"""
+        self.last_x_position = self.hero.rect.right
+        self.hero.rect.x += round(self.hero.x_vel)
+        #self.check_hero_x_collisions()
+
+        self.hero.rect.y += round(self.hero.y_vel)
+        #self.check_hero_y_collisions()
+
+        if self.hero.rect.x < (self.viewport.x + 5):
+            self.hero.rect.x = (self.viewport.x + 5)   
 
         
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
         self.level.blit(self.ground.image, (0,560))
-        self.level.blit(self.hero.image, (self.hero.pos_x,430))
+        #self.level.blit(self.hero.image, (self.hero.pos_x,430))
         self.blocks.draw(self.level)
+        self.pers.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         pass
