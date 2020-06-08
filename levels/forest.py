@@ -45,12 +45,12 @@ class Forest(State):
         pass
 
     def set_blocks(self):
-        self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
+        ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
 
-        block1 = Block(100, 100)
+        block1 = Block(400, 500)
         block2 = Block(140, 100)
 
-        self.blocks = pygame.sprite.Group(block1, block2, block3)
+        self.blocks = pygame.sprite.Group(block1, block2, ground)
         
 
     def set_enemies(self):
@@ -68,33 +68,46 @@ class Forest(State):
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.check_cp()
-        self.adjust_sprite_positions()
+        self.sprite_positions()
 
 
-    def adjust_sprite_positions(self):
+    def sprite_positions(self):
         """Adjusts sprites by their x and y velocities and collisions"""
-        self.adjust_mario_position()
+        self.hero_position()
 
         
-    def adjust_mario_position(self):
+    def hero_position(self):
         """Adjusts Mario's position based on his x, y velocities and
         potential collisions"""
         self.last_x_position = self.hero.rect.right
         self.hero.rect.x += round(self.hero.x_vel)
-        #self.check_hero_x_collisions()
+        self.x_collisions_hero()
 
         self.hero.rect.y += round(self.hero.y_vel)
-        #self.check_hero_y_collisions()
+        #self.y_collisions_hero()
 
         if self.hero.rect.x < (self.viewport.x + 5):
-            self.hero.rect.x = (self.viewport.x + 5)   
+            self.hero.rect.x = (self.viewport.x + 5)
+
+
+    def x_collisions_hero(self):
+        bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        
+        if bricks:
+            self.x_collisions_solve(bricks)
+
+
+    def x_collisions_solve(self, collider):
+        self.hero.x_vel = 0
+        if self.hero.rect.x < collider.rect.x:
+            self.hero.rect.right = collider.rect.left
+        else:
+            self.hero.rect.left = collider.rect.right
 
         
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-        self.level.blit(self.ground.image, (0,560))
-        #self.level.blit(self.hero.image, (self.hero.pos_x,430))
         self.blocks.draw(self.level)
         self.pers.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
