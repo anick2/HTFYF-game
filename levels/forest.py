@@ -53,7 +53,10 @@ class Forest(State):
         
 
     def set_enemies(self):
-        pass
+        mushroom0 = enemies.Mushroom()
+        mushroom1 = enemies.Mushroom()
+        enemy_group1 = pygame.sprite.Group(mushroom0, mushroom1)
+        self.enemy_group_list = [enemy_group1]
 
     def set_checkpoints(self):
         '''при столкновении героя с чекпоинтами появляются враги'''
@@ -74,6 +77,7 @@ class Forest(State):
         self.level.blit(self.background, self.viewport, self.viewport)
         self.level.blit(self.ground.image, (0,560))
         self.level.blit(self.hero.image, (self.hero.pos_x,430))
+        #self.level.blit(self.mushroom.image, (self.mushroom.rect.x,340))
         self.blocks.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
