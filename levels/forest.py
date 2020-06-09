@@ -785,9 +785,14 @@ class Forest(State):
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         
         if bricks:
-            self.hero.rect.bottom = bricks.rect.top
-            self.hero.state = "WALK"
-            self.hero.y_vel = 0
+            if self.hero.rect.y > bricks.rect.y:
+                self.hero.rect.y = bricks.rect.bottom
+                self.hero.y_vel = 7
+                self.hero.state = "FALL"
+            else:
+                self.hero.rect.bottom = bricks.rect.top
+                self.hero.y_vel = 0
+                self.hero.state = "WALK"
 
 
 
