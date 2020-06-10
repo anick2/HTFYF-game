@@ -45,8 +45,6 @@ class Forest(State):
         pass
 
     def set_blocks(self):
-        ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
-
         
         block0 = Block(4560, 80)
         block1 = Block(2840, 160)
@@ -726,7 +724,6 @@ class Forest(State):
                                         block532, block533, block534, block535,
                                         block536, block537, block538, block539,
                                         block540)
-        
 
     def set_enemies(self):
         pass
