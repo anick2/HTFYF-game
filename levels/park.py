@@ -30,7 +30,7 @@ class Park(State):
         
         
     def on_create(self):      
-        # self.sound_player = Sound("FOREST")
+        self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
         self.set_blocks()
@@ -40,8 +40,10 @@ class Park(State):
     def set_hero(self):
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
-        self.hero.rect.bottom = c.HEIGHT_OF_GROUND
+        self.hero.rect.bottom = 560
+        self.pers = pygame.sprite.Group(self.hero)
         pass
+
 
     def set_blocks(self):
         self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
@@ -417,19 +419,79 @@ class Park(State):
     def on_update(self, keys):
         self.update_everything(keys)
         self.blit_everything()
+        self.update_viewport()
 
 
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.check_cp()
+        self.sprite_positions()
+
+
+    def sprite_positions(self):
+        """Adjusts sprites by their x and y velocities and collisions"""
+        self.hero_position()
+
+        
+    def hero_position(self):
+        """Adjusts Mario's position based on his x, y velocities and
+        potential collisions"""
+        self.last_x_position = self.hero.rect.right
+        self.hero.rect.x += round(self.hero.x_vel)
+        self.x_collisions_hero()
+
+        self.hero.rect.y += round(self.hero.y_vel)
+        self.y_collisions_hero()
+
+        if self.hero.rect.x < (self.viewport.x + 5):
+            self.hero.rect.x = (self.viewport.x + 5)
+
+
+    def x_collisions_hero(self):
+        bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        
+        if bricks:
+            self.x_collisions_solve(bricks)
+
+
+    def x_collisions_solve(self, collider):
+        self.hero.x_vel = 0
+        if self.hero.rect.x < collider.rect.x:
+            self.hero.rect.right = collider.rect.left
+        else:
+            self.hero.rect.left = collider.rect.right
+
+
+    def y_collisions_hero(self):
+        bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        
+        if bricks:
+            if self.hero.rect.y > bricks.rect.y:
+                self.hero.rect.y = bricks.rect.bottom
+                self.hero.y_vel = 7
+                self.hero.state = "FALL"
+            else:
+                self.hero.rect.bottom = bricks.rect.top
+                self.hero.y_vel = 0
+                self.hero.state = "WALK"
+
+
+        self.hero.rect.y += 1
+
+        if not pygame.sprite.spritecollideany(self.hero, self.blocks):
+            if self.hero.state != "JUMP":
+                self.hero.state = "FALL"
+
+        self.hero.rect.y -= 1
+
+
 
         
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-        self.level.blit(self.ground.image, (0,560))
-        self.level.blit(self.hero.image, (self.hero.pos_x,430))
         self.blocks.draw(self.level)
+        self.pers.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         pass
@@ -444,3 +506,16 @@ class Park(State):
             if pygame.mouse.get_pos()[0] >= 600 and pygame.mouse.get_pos()[1] >= 300:
                 if pygame.mouse.get_pos()[0] <= 700 and pygame.mouse.get_pos()[1] <= 350:
                     self.done = True
+
+
+    def update_viewport(self):
+        third = self.viewport.x + self.viewport.w//3
+        play_center = self.hero.rect.centerx
+        play_right = self.hero.rect.right
+
+        if self.hero.x_vel > 0 and play_center >= third:
+            mult = 0.5 if play_right < self.viewport.centerx else 1
+            new = self.viewport.x + mult * self.hero.x_vel
+            highest = self.level_rect.w - self.viewport.w
+            self.viewport.x = min(highest, new)
+
