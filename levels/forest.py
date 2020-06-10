@@ -45,8 +45,6 @@ class Forest(State):
         pass
 
     def set_blocks(self):
-        ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
-
         
         block0 = Block(4560, 80)
         block1 = Block(2840, 160)
@@ -793,6 +791,15 @@ class Forest(State):
                 self.hero.rect.bottom = bricks.rect.top
                 self.hero.y_vel = 0
                 self.hero.state = "WALK"
+
+        self.hero.rect.y += 1
+
+        if not pygame.sprite.spritecollideany(self.hero, self.blocks):
+            if self.hero.state != "JUMP":
+                self.hero.state = "FALL"
+
+        self.hero.rect.y -= 1
+
 
 
 
