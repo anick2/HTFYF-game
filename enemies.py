@@ -120,7 +120,7 @@ class Mushroom(Enemy):
     def setup_frames(self):
         """Put the image frames in a list to be animated"""
 
-        for i in range(1, 7):
+        for i in range(1, 4):
             img = pygame.transform.scale(IMAGES["left_" + str(i)], (150, 200))                       
             self.frames.append(self.get_image(img, 30, 50))
 
