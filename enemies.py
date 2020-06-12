@@ -21,7 +21,6 @@ class Enemy(pygame.sprite.Sprite):
         self.name = name
         self.direction = direction
         setup_frames()
-
         self.image = self.frames[self.frame_index]
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -44,7 +43,7 @@ class Enemy(pygame.sprite.Sprite):
 
     def update(self, game_info, *args):
         """Updates enemy behavior"""
-        self.current_time = game_info[c.CURRENT_TIME]
+        #self.current_time = game_info[c.CURRENT_TIME]
         self.handle_state()
         self.animation()
 
@@ -112,9 +111,10 @@ class Enemy(pygame.sprite.Sprite):
 
 class Mushroom(Enemy):
 
-    def __init__(self, y=c.HEIGHT_OF_GROUND, x=0, direction='left', name='mushroom'):
+    def __init__(self, y=c.HEIGHT_OF_GROUND, x=300, direction='left', name='mushroom'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames)
+
 
 
     def setup_frames(self):

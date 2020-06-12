@@ -31,7 +31,7 @@ class Forest(State):
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         
         
-    def on_create(self):      
+    def on_create(self):  
         self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
@@ -43,7 +43,7 @@ class Forest(State):
     def set_hero(self):
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
-        self.hero.rect.bottom = c.HEIGHT_OF_GROUND
+        self.hero.rect.bottom = 500
         pass
 
     def set_blocks(self):
@@ -63,7 +63,7 @@ class Forest(State):
 
     def set_checkpoints(self):
         '''при столкновении героя с чекпоинтами появляются враги'''
-        check1 = checkpoint.Checkpoint(300, "1")
+        check1 = checkpoint.Checkpoint(110, "1")
         check2 = checkpoint.Checkpoint(550, '2')
         self.check_point_group = pygame.sprite.Group(check1, check2)
 
@@ -88,20 +88,21 @@ class Forest(State):
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.check_cp()
-        self.enemy_group.update()
+        self.enemy_group.update(keys)
 
         
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
         self.level.blit(self.ground.image, (0,560))
-        self.level.blit(self.hero.image, (self.hero.pos_x,430))
-        #self.level.blit(self.mushroom.image, (self.mushroom.rect.x,340))
+        #self.level.blit(self.hero.image, (self.hero.pos_x,430))
+
         self.hero_and_enemy_group.draw(self.level)
+
         self.blocks.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
-        pass
+        
 
     def check_cp(self):
         ''' check check points'''
