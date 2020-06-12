@@ -30,7 +30,7 @@ class Forest(State):
         
         
     def on_create(self):      
-        self.sound_player = Sound("FOREST")
+        # self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
         self.set_blocks()

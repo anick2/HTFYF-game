@@ -12,7 +12,7 @@ from init import *
 class Game:
     def __init__(self):
         self.screen = screen
-        self.keys = pygame.key.get_pressed()   
+        self.keys = pygame.key.get_pressed()
         self.done = False                   #конец игры
         self.fps = 60
         self.state_dict = {}                #словарь всевозможных состояний
@@ -26,6 +26,7 @@ class Game:
         self.state = self.state_dict[start_state]
 
     def update(self):
+        self.keys = pygame.key.get_pressed()
         if self.state.done:
             self.flip_state()
         self.state.on_update(self.keys)
@@ -78,7 +79,7 @@ def main():
     states["MAIN_MENU"].set_prenex(None, "FOREST")   # объявление состояний
     states["FOREST"].set_prenex("MAIN_MENU", "CITY") 
     states["CITY"].set_prenex("FOREST", "PARK")
-    states["PARK"].set_prenex("PARK", None)
+    states["PARK"].set_prenex("PARK", "MAIN_MENU")
     game.setup_states(states, first_state)           # установка состояний
     game.start()                                     # начало игры
     
