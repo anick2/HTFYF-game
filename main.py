@@ -74,9 +74,11 @@ def main():
     states = {"MAIN_MENU": MainMenu(),
               "FOREST": Forest(),
               "CITY": City(),
-              "PARK": Park()}                        # словарь состояний 
+              "PARK": Park(),
+              "CHOOSE_HERO": Hero_Choice()}                        # словарь состояний 
     first_state = "MAIN_MENU"                        # начальное состояние
-    states["MAIN_MENU"].set_prenex(None, "FOREST")   # объявление состояний
+    states["MAIN_MENU"].set_prenex(None, "CHOOSE_HERO")   # объявление состояний
+    states["CHOOSE_HERO"].set_prenex("MAIN_MENU", "FOREST")
     states["FOREST"].set_prenex("MAIN_MENU", "CITY") 
     states["CITY"].set_prenex("FOREST", "PARK")
     states["PARK"].set_prenex("PARK", "MAIN_MENU")
