@@ -187,7 +187,7 @@ class Hero(pygame.sprite.Sprite):
                     self.y_vel = c.JUMP_VEL
 
         if keys[pygame.K_d]:
-            
+
             self.facing_right = True
             
             if self.x_vel < self.max_x_vel:
@@ -199,7 +199,7 @@ class Hero(pygame.sprite.Sprite):
             
 
         elif keys[pygame.K_a]:
-            
+
             self.facing_right = False
             
             if self.x_vel > (self.max_x_vel * -1):
@@ -259,7 +259,8 @@ class Hero(pygame.sprite.Sprite):
 
         if keys[pygame.K_a]:
             self.facing_right = False
-            if self.x_vel > (self.max_x_vel * - 1):
+            
+            if self.x_vel > (self.max_x_vel * -1):
                 self.x_vel -= self.x_accel
                 if self.x_vel > -0.5:
                     self.x_vel = -0.5
@@ -268,6 +269,7 @@ class Hero(pygame.sprite.Sprite):
 
         elif keys[pygame.K_d]:
             self.facing_right = True
+            
             if self.x_vel < self.max_x_vel:
                 self.x_vel += self.x_accel
                 if self.x_vel < 0.5:
@@ -312,8 +314,9 @@ class Hero(pygame.sprite.Sprite):
 
         if keys[pygame.K_a]:
             self.facing_right = False
-            if self.x_vel > (self.max_x_vel * - 1):
-                self.x_vel -= self.x_accel
+            
+            if self.x_vel > (self.max_x_vel * -1):
+                self.x_vel -= self.x_accel / 2
                 if self.x_vel > -0.5:
                     self.x_vel = -0.5
             elif self.x_vel < (self.max_x_vel * -1):
@@ -321,14 +324,13 @@ class Hero(pygame.sprite.Sprite):
 
         elif keys[pygame.K_d]:
             self.facing_right = True
+            
             if self.x_vel < self.max_x_vel:
-                self.x_vel += self.x_accel
+                self.x_vel += self.x_accel / 2
                 if self.x_vel < 0.5:
                     self.x_vel = 0.5
             elif self.x_vel > self.max_x_vel:
                 self.x_vel -= self.x_accel
-
-
 
 
     def animation(self):
