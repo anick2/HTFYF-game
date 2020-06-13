@@ -15,6 +15,10 @@ class MainMenu(State):
 
     def on_create(self):
         self.image = pygame.Surface(c.SCREEN_SIZE).convert()
+        self.image_name = pygame.transform.scale(IMAGES["name_text"], c.TEXT_SIZE)
+        self.image_name.set_colorkey((0, 0, 0))
+        self.image_start = pygame.transform.scale(IMAGES["start_button"], c.START_SIZE)
+        self.image_start.set_colorkey((0,0,0))
         self.background = []
         self.clock = 0
         pygame.display.flip()
@@ -26,7 +30,8 @@ class MainMenu(State):
         self.clock = 1
         self.image.blit(IMAGES["main_bg1"], (0, 0))
         screen.blit(self.image, (0, 0))
-        pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
+        screen.blit(self.image_name, (c.WIDTH / 2 - c.TEXT_WIDTH / 2, 0))
+        screen.blit(self.image_start, (c.WIDTH / 2, c.HEIGHT - c.START_HEIGHT))
 
     def on_update(self, keys):
         pygame.display.flip()
@@ -41,12 +46,13 @@ class MainMenu(State):
 
         self.image.blit(self.background[self.background_index], (0, 0))
         screen.blit(self.image, (0, 0))
-        pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
+        screen.blit(self.image_name, (c.WIDTH / 2 - c.TEXT_WIDTH / 2, 0))
+        screen.blit(self.image_start, (c.WIDTH / 2, c.HEIGHT - c.START_HEIGHT))
 
     def get_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pos()[0] >= 500 and pygame.mouse.get_pos()[1] >= 300:
-                if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 350:
+            if pygame.mouse.get_pos()[0] >= c.WIDTH / 2 and pygame.mouse.get_pos()[1] >= c.HEIGHT - c.START_HEIGHT:
+                if pygame.mouse.get_pos()[0] <= c.WIDTH / 2 + c.START_WIDTH and pygame.mouse.get_pos()[1] <= c.HEIGHT:
                     self.done = True
 
 
