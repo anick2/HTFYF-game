@@ -490,7 +490,7 @@ class Park(State):
         self.blocks.draw(self.level)
         self.pers.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
-        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
+        #pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         pass
 
     def check_cp(self):
