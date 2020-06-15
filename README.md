@@ -27,3 +27,26 @@ _Что_ _вас_ _ждет:_
 
 #### Главное меню
 
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/main.png)
+
+#### Уровень "Лес"
+
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/forest.png)
+
+#### Уровень "Город"
+
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/city.png)
+
+#### Уровень "Парк развлечений"
+
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/park.png)
+
+#### Управление
+
+*W* -  прыжок
+*D* - впарво
+*A* - влево
+*Space* - удар
+
+
+
