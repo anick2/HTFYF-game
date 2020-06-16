@@ -21,7 +21,8 @@ class Enemy(pygame.sprite.Sprite):
         self.name = name
         self.direction = direction
         setup_frames()
-        self.image = self.frames[self.frame_index]
+        self.image = pygame.Surface((150, 200)).convert()
+        self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.bottom = y
@@ -105,8 +106,7 @@ class Enemy(pygame.sprite.Sprite):
 
 
     def animation(self):
-        """Basic animation, switching between two frames"""
-        self.image = self.frames[self.frame_index]
+        self.image.blit(self.frames[self.frame_index], (0, 0))
 
 
 class Mushroom(Enemy):
@@ -114,15 +114,17 @@ class Mushroom(Enemy):
     def __init__(self, y= c.HEIGHT - c.HEIGHT_OF_GROUND, x=300, direction='left', name='mushroom'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames)
-
-
+        
 
     def setup_frames(self):
         """Put the image frames in a list to be animated"""
+        self.frame_index = 0
+
+        self.frames = []
 
         for i in range(1, 4):
             img = pygame.transform.scale(IMAGES["left_" + str(i)], (150, 200))                       
-            self.frames.append(self.get_image(img, 30, 50))
+            self.frames.append(img)
 
 
     '''def jumped_on(self):

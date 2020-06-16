@@ -431,16 +431,18 @@ class Forest(State):
         
 
     def set_enemies(self):
-        mushroom0 = enemies.Mushroom()
+        self.mushroom0 = enemies.Mushroom()
         mushroom1 = enemies.Mushroom()
         mushroom2 = enemies.Mushroom()
-        enemy_group1 = pygame.sprite.Group(mushroom0, mushroom1, mushroom2)
-        self.enemy_group_list = [enemy_group1]
+        enemy_group1 = pygame.sprite.Group(self.mushroom0)
+        enemy_group2 = pygame.sprite.Group(mushroom1)
+        enemy_group3 = pygame.sprite.Group(mushroom2)
+        self.enemy_group_list = [enemy_group1, enemy_group2, enemy_group3]
 
     def set_checkpoints(self):
         '''при столкновении героя с чекпоинтами появляются враги'''
-        check1 = checkpoint.Checkpoint(1100, "1")
-        check2 = checkpoint.Checkpoint(1550, '2')
+        check1 = checkpoint.Checkpoint(500, "1")
+        check2 = checkpoint.Checkpoint(1000, '2')
         check3 = checkpoint.Checkpoint(4550, '3')
         self.check_point_group = pygame.sprite.Group(check1, check2, check3)
 
@@ -526,6 +528,9 @@ class Forest(State):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
 
+
+        #self.level.blit(self.mushroom0.image, (300, 560))
+
         self.hero_and_enemy_group.draw(self.level)
 
         self.blocks.draw(self.level)
@@ -535,21 +540,21 @@ class Forest(State):
 
     def check_cp(self):
         ''' check check points'''
-        checkpoint = pygame.sprite.spritecollideany(self.hero,
-                                                 self.check_point_group)
+        checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
         if checkpoint:
             checkpoint.kill()
-            for i in range(1,3):
+            for i in range(1,4):
                 if checkpoint.name == str(i):
+                    print(checkpoint.name)
                     for index, enemy in enumerate(self.enemy_group_list[i - 1]):
                         enemy.rect.x = self.viewport.right + (index * 60)
-                        enemy.rect.bottom = 300
+                        #enemy.rect.bottom = 560
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)
 
     '''def adjust_sprite_positions(self):
         """Регулирует спрайты по их скоростям x и y и столкновениям"""
-        self.adjust_mario_position()
+        self.adjust_hero_position()
         self.adjust_enemy_position()'''
         
     
