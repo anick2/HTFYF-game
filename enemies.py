@@ -111,7 +111,7 @@ class Enemy(pygame.sprite.Sprite):
 
 class Mushroom(Enemy):
 
-    def __init__(self, y=c.HEIGHT_OF_GROUND, x=300, direction='left', name='mushroom'):
+    def __init__(self, y= c.HEIGHT - c.HEIGHT_OF_GROUND, x=300, direction='left', name='mushroom'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames)
 

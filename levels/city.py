@@ -394,13 +394,10 @@ class City(State):
 
 
     def sprite_positions(self):
-        """Adjusts sprites by their x and y velocities and collisions"""
         self.hero_position()
 
         
     def hero_position(self):
-        """Adjusts Mario's position based on his x, y velocities and
-        potential collisions"""
         self.last_x_position = self.hero.rect.right
         self.hero.rect.x += round(self.hero.x_vel)
         self.x_collisions_hero()
@@ -458,7 +455,6 @@ class City(State):
         self.blocks.draw(self.level)
         self.pers.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
-        #pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         pass
 
     def check_cp(self):
