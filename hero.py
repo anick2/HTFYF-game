@@ -42,7 +42,7 @@ class Hero(pygame.sprite.Sprite):
             img = pygame.transform.scale(IMAGES["walk" + str(i)], c.HERO_SIZE)                       
             self.right_walking.append(img)
 
-        for i in range(1, 7):
+        for i in range(1, 8):
             img = pygame.transform.scale(IMAGES["hit" + str(i)], c.HERO_SIZE)                       
             self.right_fighting.append(img)
 
@@ -106,7 +106,7 @@ class Hero(pygame.sprite.Sprite):
             if self.flag == False:
                 self.frame_index = 0
                 self.flag = True
-            max_frames = 4
+            max_frames = 5
             self.right_frames = self.right_fighting
             self.left_frames = self.left_fighting
             
@@ -146,7 +146,7 @@ class Hero(pygame.sprite.Sprite):
             if self.flag == False:
                 self.frame_index = 0
                 self.flag = True
-            max_frames = 4
+            max_frames = 5
             self.right_frames = self.right_fighting
             self.left_frames = self.left_fighting
             
@@ -231,7 +231,7 @@ class Hero(pygame.sprite.Sprite):
             if self.flag == False:
                 self.frame_index = 0
                 self.flag = True
-            max_frames = 4
+            max_frames = 5
             self.right_frames = self.right_fighting
             self.left_frames = self.left_fighting
             
@@ -291,7 +291,7 @@ class Hero(pygame.sprite.Sprite):
             if self.flag == False:
                 self.frame_index = 0
                 self.flag = True
-            max_frames = 4
+            max_frames = 5
             self.right_frames = self.right_fighting
             self.left_frames = self.left_fighting
             

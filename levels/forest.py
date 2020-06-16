@@ -488,9 +488,17 @@ class Forest(State):
 
     def x_collisions_hero(self):
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         
         if bricks:
             self.x_collisions_solve(bricks)
+
+        if enemy:
+            if self.hero.flag == True:
+                enemy.kill()
+            else:
+                self.x_collisions_solve(enemy)
+                
 
 
     def x_collisions_solve(self, collider):
