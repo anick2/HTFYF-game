@@ -29,7 +29,7 @@ class City(State):
         
         
     def on_create(self):      
-        self.sound_player = Sound("FOREST")
+        # self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
         self.set_blocks()
@@ -296,6 +296,16 @@ class City(State):
         block247 = Block(4480, 560, 'city')
         block248 = Block(4520, 560, 'city')
         block249 = Block(4560, 560, 'city')
+        block250 = Block(4600, 560, 'city')
+        block251 = Block(4640, 560, 'city')
+        block252 = Block(4680, 560, 'city')
+        block253 = Block(4720, 560, 'city')
+        block254 = Block(4760, 560, 'city')
+        block255 = Block(4800, 560, 'city')
+        block256 = Block(4840, 560, 'city')
+        block257 = Block(4880, 560, 'city')
+        block258 = Block(4920, 560, 'city')
+        block259 = Block(4960, 560, 'city')
 
         self.blocks = pygame.sprite.Group(block0, block1, block2, block3,
                                         block4, block5, block6, block7,
@@ -359,7 +369,9 @@ class City(State):
                                         block236, block237, block238, block239,
                                         block240, block241, block242, block243,
                                         block244, block245, block246, block247,
-                                        block248, block249)
+                                        block248, block249, block250, block251,
+                                        block252, block253, block254, block255,
+                                        block256, block257, block258, block259)
         
 
     def set_enemies(self):
@@ -462,13 +474,14 @@ class City(State):
 
 
     def update_viewport(self):
-        third = self.viewport.x + self.viewport.w//3
-        play_center = self.hero.rect.centerx
-        play_right = self.hero.rect.right
+        if (self.viewport.x <= 4000):
+            third = self.viewport.x + self.viewport.w//3
+            play_center = self.hero.rect.centerx
+            play_right = self.hero.rect.right
 
-        if self.hero.x_vel > 0 and play_center >= third:
-            mult = 0.5 if play_right < self.viewport.centerx else 1
-            new = self.viewport.x + mult * self.hero.x_vel
-            highest = self.level_rect.w - self.viewport.w
-            self.viewport.x = min(highest, new)
+            if self.hero.x_vel > 0 and play_center >= third:
+                mult = 1 if play_right < self.viewport.centerx else 2
+                new = self.viewport.x + mult * self.hero.x_vel
+                highest = self.level_rect.w - self.viewport.w
+                self.viewport.x = min(highest, new)
 

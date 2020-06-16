@@ -337,6 +337,16 @@ class Forest(State):
         block288 = Block(4480, 560, 'forest')
         block289 = Block(4520, 560, 'forest')
         block290 = Block(4560, 560, 'forest')
+        block291 = Block(4600, 560, 'forest')
+        block292 = Block(4640, 560, 'forest')
+        block293 = Block(4680, 560, 'forest')
+        block294 = Block(4720, 560, 'forest')
+        block295 = Block(4760, 560, 'forest')
+        block296 = Block(4800, 560, 'forest')
+        block297 = Block(4840, 560, 'forest')
+        block298 = Block(4880, 560, 'forest')
+        block299 = Block(4920, 560, 'forest')
+        block300 = Block(4960, 560, 'forest')
         
         self.blocks = pygame.sprite.Group(block0, block1, block2, block3,
                                         block4, block5, block6, block7,
@@ -410,7 +420,10 @@ class Forest(State):
                                         block276, block277, block278, block279,
                                         block280, block281, block282, block283,
                                         block284, block285, block286, block287,
-                                        block288, block289, block290)
+                                        block288, block289, block290, block291,
+                                        block292, block293, block294, block295,
+                                        block296, block297, block298, block299,
+                                        block300)
 
     def set_enemies(self):
         pass
@@ -512,12 +525,13 @@ class Forest(State):
 
 
     def update_viewport(self):
-        third = self.viewport.x + self.viewport.w//3
-        play_center = self.hero.rect.centerx
-        play_right = self.hero.rect.right
+        if (self.viewport.x <= 4000):
+            third = self.viewport.x + self.viewport.w//3
+            play_center = self.hero.rect.centerx
+            play_right = self.hero.rect.right
 
-        if self.hero.x_vel > 0 and play_center >= third:
-            mult = 0.5 if play_right < self.viewport.centerx else 1
-            new = self.viewport.x + mult * self.hero.x_vel
-            highest = self.level_rect.w - self.viewport.w
-            self.viewport.x = min(highest, new)
+            if self.hero.x_vel > 0 and play_center >= third:
+                mult = 1 if play_right < self.viewport.centerx else 2
+                new = self.viewport.x + mult * self.hero.x_vel
+                highest = self.level_rect.w - self.viewport.w
+                self.viewport.x = min(highest, new)
