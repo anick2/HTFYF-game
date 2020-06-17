@@ -9,14 +9,12 @@ class Enemy(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
-    def setup_enemy(self, x, y, direction, name, setup_frames):
+    def setup_enemy(self, x, y, direction, name, setup_frames, state):
         """Sets up various values for enemy"""
         self.frames = []
         self.frame_index = 0
-        self.animate_timer = 0
         self.death_timer = 0
-        self.gravity = 1.5
-        self.state = "STAND" 
+        self.state = state 
 
         self.name = name
         self.direction = direction
@@ -61,49 +59,11 @@ class Enemy(pygame.sprite.Sprite):
         elif self.state == "DEATH_JUMP":
             self.death_jumping()'''
 
-    '''def walking(self):
-    """Default state of moving sideways"""
-        if (self.current_time - self.animate_timer) > 125:
-            if self.frame_index == 0:
-                self.frame_index += 1
-            elif self.frame_index == 1:
-                self.frame_index = 0
-
-            self.animate_timer = self.current_time
-
- 	def falling(self):
-        """For when it falls off a ledge"""
-        if self.y_vel < 10:
-            self.y_vel += self.gravity
-
-
-	def jumped_on(self):
-        """Placeholder for when the enemy is stomped on"""
-        pass
-
-
-    def death_jumping(self):
-        """Death animation"""
-        self.rect.y += self.y_vel
-        self.rect.x += self.x_vel
-        self.y_vel += self.gravity
-
-        if self.rect.y > 600:
-            self.kill()
-
-
-    def start_death_jump(self, direction):
-        """Transitions enemy into a DEATH JUMP state"""
-        self.y_vel = -8
-        if direction == c.RIGHT:
-            self.x_vel = 2
+    def walking(self):
+        if self.frame_index < 2:
+            self.frame_index += 1
         else:
-            self.x_vel = -2
-        self.gravity = .5
-        self.frame_index = 3
-        self.image = self.frames[self.frame_index]
-        self.state = c.DEATH_JUMP'''
-
+            self.frame_index = 0
 
     def animation(self):
         self.image.blit(self.frames[self.frame_index], (0, 0))
@@ -111,9 +71,16 @@ class Enemy(pygame.sprite.Sprite):
 
 class Mushroom(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom', state = 'WALK'):
         Enemy.__init__(self)
-        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        self.setup_enemy(x, y, direction, name, self.setup_frames, state)
+        self.x_vel = 1
+        self.y_vel = 0
+        self.max_x_vel = c.MAX_WALK_SPEED
+        self.max_y_vel = c.MAX_Y_VEL
+        self.x_accel = c.WALK_ACCEL
+        self.jump_vel = c.JUMP_VEL
+        self.gravity = c.GRAVITY
         
 
     def setup_frames(self):
@@ -122,15 +89,23 @@ class Mushroom(Enemy):
 
         self.frames = []
 
-        for i in range(1, 4):
-            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+        for i in range(1, 7):
+            img = pygame.transform.scale(IMAGES["m_walk_" + str(i)], c.HERO_SIZE)                       
             self.frames.append(img)
+
 
 class Spider(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom', state = 'WALK'):
         Enemy.__init__(self)
-        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        self.setup_enemy(x, y, direction, name, self.setup_frames, state)
+        self.x_vel = 2
+        self.y_vel = 0
+        self.max_x_vel = c.MAX_WALK_SPEED
+        self.max_y_vel = c.MAX_Y_VEL
+        self.x_accel = c.WALK_ACCEL
+        self.jump_vel = c.JUMP_VEL
+        self.gravity = c.GRAVITY
         
 
     def setup_frames(self):
@@ -139,8 +114,8 @@ class Spider(Enemy):
 
         self.frames = []
 
-        for i in range(1, 4):
-            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+        for i in range(1, 5):
+            img = pygame.transform.scale(IMAGES["b_walk_" + str(i)], c.HERO_SIZE)                       
             self.frames.append(img)
 
 class Cop(Enemy):

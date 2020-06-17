@@ -489,10 +489,12 @@ class Forest(State):
         spider_group5 = pygame.sprite.Group(spider5)
         spider6 = enemies.Spider(4120, 560)
         spider_group6 = pygame.sprite.Group(spider6)
+        self.enemies = [mushroom0,mushroom1,mushroom2,mushroom3,mushroom4,mushroom5,mushroom6,spider1,spider2,spider3,spider4,spider5,spider6]
         self.enemy_group_list = [mushroom_group0, mushroom_group1, mushroom_group2, mushroom_group3,
                                  mushroom_group4, mushroom_group5, mushroom_group6, spider_group0,
                                  spider_group1, spider_group2, spider_group3, spider_group4,
                                  spider_group5, spider_group6]
+
 
     def set_checkpoints(self):
         check1 = checkpoint.Checkpoint(2840, "1")
@@ -530,8 +532,8 @@ class Forest(State):
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
         self.check_cp()
         self.info_coin.update()
-        self.sprite_positions()
         self.enemy_group.update(keys)
+        self.sprite_positions()
         self.coins.update()
         self.end_of_level()
 
@@ -542,6 +544,7 @@ class Forest(State):
 
     def sprite_positions(self):
         self.hero_position()
+        self.enemy_position()
 
     def hero_position(self):
         self.last_x_position = self.hero.rect.right
@@ -605,6 +608,82 @@ class Forest(State):
 
         self.hero.rect.y -= 1
 
+    def enemy_position(self):
+        for i in self.enemies:
+            self.last_x_position = i.rect.right
+            if i.direction == 'right':
+                print(i)
+                i.rect.x += round(i.x_vel)
+            else:
+                print(i)
+                i.rect.x -= round(i.x_vel)
+            self.x_collisions_enemy(i)
+            
+        """
+        self.last_x_position = self.enemies[0].rect.right
+        self.enemies[0].rect.x += round(self.enemies[0].x_vel)
+        self.x_collisions_enemy()
+
+        self.enemies[0].rect.y += round(self.enemies[0].y_vel)
+        self.y_collisions_enemy()
+
+        if self.enemies[0].rect.x < (self.viewport.x + 5):
+            self.enemies[0].rect.x = (self.viewport.x + 5)
+"""
+    def x_collisions_enemy(self, i):
+        bricks = pygame.sprite.spritecollideany(i, self.blocks)
+        #enemy = pygame.sprite.spritecollideany(self.enemy_group, self.enemy_group)
+        #coin = pygame.sprite.spritecollideany(self.enemy_group, self.coins)
+        
+        if bricks:
+            print("enot")
+            self.x_collisions_solve_enemy(bricks, i)
+
+    ''' if enemy:
+            if self.hero.flag == True:
+                enemy.kill()
+            else:
+                self.x_collisions_solve_enemy(enemy)
+
+        if coin:
+            self.info_coin.number += 1
+            coin.kill()'''
+                
+
+
+    def x_collisions_solve_enemy(self, collider, i):
+        if i.direction == 'right':
+            i.direction = 'left'
+        else:
+            i.direction = 'right'
+        if i.rect.x < collider.rect.x:
+            i.rect.right = collider.rect.left
+        else:
+            i.rect.left = collider.rect.right
+
+
+    def y_collisions_enemy(self):
+        bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        
+        if bricks:
+            if self.enemies[0].rect.y > bricks.rect.y:
+                self.enemies[0].rect.y = bricks.rect.bottom
+                self.enemies[0].y_vel = 7
+                self.enemies[0].state = "FALL"
+            else:
+                self.enemies[0].rect.bottom = bricks.rect.top
+                self.enemies[0].y_vel = 0
+                self.enemies[0].state = "WALK"
+
+
+        self.enemies[0].rect.y += 1
+
+        if not pygame.sprite.spritecollideany(self.enemies[0], self.blocks):
+            if self.enemies[0].state != "JUMP":
+                self.enemies[0].state = "FALL"
+
+        self.hero.rect.y -= 1
+
         
     def blit_everything(self):
         pygame.display.flip()
@@ -612,6 +691,7 @@ class Forest(State):
         self.coins.draw(self.level)
         self.info.draw(self.level)
         self.blocks.draw(self.level)
+        self.pers.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
