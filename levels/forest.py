@@ -51,9 +51,31 @@ class Forest(State):
 
 
     def set_coins(self):
-        coin1 = Coin(100, 450)
-        coin2 = Coin(100, 100)
-        self.coins = pygame.sprite.Group(coin1, coin2)
+        coin0 = Coin(1360, 80)
+        coin1 = Coin(1400, 80)
+        coin2 = Coin(2080, 80)
+        coin3 = Coin(3840, 160)
+        coin4 = Coin(3600, 280)
+        coin5 = Coin(2640, 320)
+        coin6 = Coin(3240, 320)
+        coin7 = Coin(1000, 360)
+        coin8 = Coin(1240, 360)
+        coin9 = Coin(80, 400)
+        coin10 = Coin(720, 400)
+        coin11 = Coin(360, 440)
+        coin12 = Coin(2960, 440)
+        coin13 = Coin(520, 520)
+        coin14 = Coin(960, 520)
+        coin15 = Coin(1280, 520)
+        coin16 = Coin(1880, 520)
+        coin17 = Coin(2400, 520)
+        coin18 = Coin(3280, 520)
+        coin19 = Coin(3960, 520)
+        self.coins = pygame.sprite.Group(coin0, coin1, coin2, coin3,
+                                        coin4, coin5, coin6, coin7,
+                                        coin8, coin9, coin10, coin11,
+                                        coin12, coin13, coin14, coin15,
+                                        coin16, coin17, coin18, coin19)
 
     def set_blocks(self):
         #self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)

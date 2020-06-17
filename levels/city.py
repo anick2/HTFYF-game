@@ -51,9 +51,31 @@ class City(State):
         pass
 
     def set_coins(self):
-        coin1 = Coin(100, 450)
-        coin2 = Coin(100, 100)
-        self.coins = pygame.sprite.Group(coin1, coin2)
+        coin0 = Coin(680, 40)
+        coin1 = Coin(1920, 80)
+        coin2 = Coin(2080, 80)
+        coin3 = Coin(3080, 80)
+        coin4 = Coin(3120, 80)
+        coin5 = Coin(2840, 120)
+        coin6 = Coin(480, 160)
+        coin7 = Coin(2440, 160)
+        coin8 = Coin(400, 240)
+        coin9 = Coin(320, 320)
+        coin10 = Coin(4280, 320)
+        coin11 = Coin(3600, 360)
+        coin12 = Coin(560, 400)
+        coin13 = Coin(2200, 400)
+        coin14 = Coin(3760, 400)
+        coin15 = Coin(1120, 480)
+        coin16 = Coin(320, 520)
+        coin17 = Coin(840, 520)
+        coin18 = Coin(2120, 520)
+        coin19 = Coin(3960, 520)
+        self.coins = pygame.sprite.Group(coin0, coin1, coin2, coin3,
+                                        coin4, coin5, coin6, coin7,
+                                        coin8, coin9, coin10, coin11,
+                                        coin12, coin13, coin14, coin15,
+                                        coin16, coin17, coin18, coin19)
 
 
     def set_blocks(self):

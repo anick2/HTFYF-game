@@ -212,13 +212,13 @@ class Hero(pygame.sprite.Sprite):
         else:
             if self.facing_right:
                 if self.x_vel > 0:
-                    self.x_vel -= self.x_accel
+                    self.x_vel -= 3 * self.x_accel
                 else:
                     self.x_vel = 0
                     self.state = "STAND"
             else:
                 if self.x_vel < 0:
-                    self.x_vel += self.x_accel
+                    self.x_vel += 3 * self.x_accel
                 else:
                     self.x_vel = 0
                     self.state = "STAND"
@@ -276,6 +276,18 @@ class Hero(pygame.sprite.Sprite):
                     self.x_vel = 0.5
             elif self.x_vel > self.max_x_vel:
                 self.x_vel -= self.x_accel
+        else:
+            if self.facing_right:
+                if self.x_vel > 0:
+                    self.x_vel -= 3 * self.x_accel
+                else:
+                    self.x_vel = 0
+            else:
+                if self.x_vel < 0:
+                    self.x_vel += 3 * self.x_accel
+                else:
+                    self.x_vel = 0
+        
 
         if not keys[pygame.K_w]:
             self.gravity = c.GRAVITY
