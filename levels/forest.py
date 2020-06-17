@@ -37,6 +37,7 @@ class Forest(State):
         self.set_hero()
         self.set_blocks()
         self.set_enemies()
+        self.set_coins()
         self.set_checkpoints()
         self.set_spritegroups()
 
@@ -45,7 +46,14 @@ class Forest(State):
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
         self.pers = pygame.sprite.Group(self.hero)
-        pass
+        self.info_coin = Info()
+        self.info = pygame.sprite.Group(self.info_coin)
+
+
+    def set_coins(self):
+        coin1 = Coin(100, 450)
+        coin2 = Coin(100, 100)
+        self.coins = pygame.sprite.Group(coin1, coin2)
 
     def set_blocks(self):
         #self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
@@ -447,15 +455,7 @@ class Forest(State):
         self.check_point_group = pygame.sprite.Group(check1, check2, check3)
 
     def set_spritegroups(self):
-        """Sprite groups created for convenience"""
-        #self.sprites_about_to_die_group = pg.sprite.Group()
-        #self.shell_group = pg.sprite.Group()
         self.enemy_group = pygame.sprite.Group()
-
-        #self.ground_step_pipe_group = pg.sprite.Group(self.ground_group,
-                                                      #self.pipe_group,
-                                                      #self.step_group)
-
         self.hero_and_enemy_group = pygame.sprite.Group(self.hero,
                                                      self.enemy_group)
 
@@ -467,9 +467,17 @@ class Forest(State):
 
     def update_everything(self, keys):
         self.hero.update(keys, {})
+        self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
         self.check_cp()
+        self.info_coin.update()
         self.sprite_positions()
         self.enemy_group.update(keys)
+        self.end_of_level()
+
+
+    def end_of_level(self):
+        if self.hero.rect.x >= 4900:
+            self.done = True
 
     def sprite_positions(self):
         self.hero_position()
@@ -489,6 +497,7 @@ class Forest(State):
     def x_collisions_hero(self):
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
+        coin = pygame.sprite.spritecollideany(self.hero, self.coins)
         
         if bricks:
             self.x_collisions_solve(bricks)
@@ -498,6 +507,10 @@ class Forest(State):
                 enemy.kill()
             else:
                 self.x_collisions_solve(enemy)
+
+        if coin:
+            self.info_coin.number += 1
+            coin.kill()
                 
 
 
@@ -536,11 +549,9 @@ class Forest(State):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
 
-
-        #self.level.blit(self.mushroom0.image, (300, 560))
-
+        self.coins.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
-
+        self.info.draw(self.level)
         self.blocks.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));

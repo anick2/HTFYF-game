@@ -33,6 +33,7 @@ class City(State):
         self.set_background()
         self.set_hero()
         self.set_blocks()
+        self.set_coins()
         self.set_enemies()
         self.set_checkpoints()
 
@@ -41,7 +42,16 @@ class City(State):
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
         self.pers = pygame.sprite.Group(self.hero)
+        self.info_coin = Info()
+        self.info = pygame.sprite.Group(self.info_coin)
+        
         pass
+
+    def set_coins(self):
+        coin1 = Coin(100, 450)
+        coin2 = Coin(100, 100)
+        self.coins = pygame.sprite.Group(coin1, coin2)
+
 
     def set_blocks(self):
         self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
@@ -375,7 +385,7 @@ class City(State):
         
 
     def set_enemies(self):
-        pass
+        self.enemy_group = []
 
     def set_checkpoints(self):
         '''при столкновении героя с чекпоинтами появляются враги'''
@@ -389,10 +399,16 @@ class City(State):
 
     def update_everything(self, keys):
         self.hero.update(keys, {})
+        self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
         self.check_cp()
+        self.info_coin.update()
         self.sprite_positions()
+        self.end_of_level()
 
-
+    def end_of_level(self):
+        if self.hero.rect.x >= 4900:
+            self.done = True
+            
     def sprite_positions(self):
         self.hero_position()
 
@@ -411,9 +427,21 @@ class City(State):
 
     def x_collisions_hero(self):
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+        enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
+        coin = pygame.sprite.spritecollideany(self.hero, self.coins)
         
         if bricks:
             self.x_collisions_solve(bricks)
+
+        if enemy:
+            if self.hero.flag == True:
+                enemy.kill()
+            else:
+                self.x_collisions_solve(enemy)
+
+        if coin:
+            self.info_coin.number += 1
+            coin.kill()
 
 
     def x_collisions_solve(self, collider):
@@ -452,10 +480,13 @@ class City(State):
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-        self.blocks.draw(self.level)
+
+        self.coins.draw(self.level)
         self.pers.draw(self.level)
+        self.info.draw(self.level)
+        self.blocks.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
-        pass
+        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
 
     def check_cp(self):
         ''' check check points'''
