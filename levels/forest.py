@@ -497,7 +497,7 @@ class Forest(State):
 
 
     def set_checkpoints(self):
-        check1 = checkpoint.Checkpoint(2840, "1")
+        check1 = checkpoint.Checkpoint(110, "1")
         check2 = checkpoint.Checkpoint(2000, '2')
         check3 = checkpoint.Checkpoint(560, '3')
         check4 = checkpoint.Checkpoint(1560, "4")
@@ -612,44 +612,21 @@ class Forest(State):
         for i in self.enemies:
             self.last_x_position = i.rect.right
             if i.direction == 'right':
-                print(i)
                 i.rect.x += round(i.x_vel)
             else:
-                print(i)
                 i.rect.x -= round(i.x_vel)
             self.x_collisions_enemy(i)
-            
-        """
-        self.last_x_position = self.enemies[0].rect.right
-        self.enemies[0].rect.x += round(self.enemies[0].x_vel)
-        self.x_collisions_enemy()
+            #self.y_collisions_enemy(i)
 
-        self.enemies[0].rect.y += round(self.enemies[0].y_vel)
-        self.y_collisions_enemy()
-
-        if self.enemies[0].rect.x < (self.viewport.x + 5):
-            self.enemies[0].rect.x = (self.viewport.x + 5)
-"""
     def x_collisions_enemy(self, i):
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
-        #enemy = pygame.sprite.spritecollideany(self.enemy_group, self.enemy_group)
+        enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         #coin = pygame.sprite.spritecollideany(self.enemy_group, self.coins)
         
         if bricks:
-            print("enot")
             self.x_collisions_solve_enemy(bricks, i)
-
-    ''' if enemy:
-            if self.hero.flag == True:
-                enemy.kill()
-            else:
-                self.x_collisions_solve_enemy(enemy)
-
-        if coin:
-            self.info_coin.number += 1
-            coin.kill()'''
-                
-
+        if enemy:
+            self.x_collisions_solve_enemy(self.hero, enemy)
 
     def x_collisions_solve_enemy(self, collider, i):
         if i.direction == 'right':
@@ -662,14 +639,15 @@ class Forest(State):
             i.rect.left = collider.rect.right
 
 
-    def y_collisions_enemy(self):
-        bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
+    def y_collisions_enemy(self, i):
+        bricks = pygame.sprite.spritecollideany(i, self.blocks)
+        enemy = pygame.sprite.spritecollideany(self.hero, i)
         
         if bricks:
-            if self.enemies[0].rect.y > bricks.rect.y:
-                self.enemies[0].rect.y = bricks.rect.bottom
-                self.enemies[0].y_vel = 7
-                self.enemies[0].state = "FALL"
+            if i.rect.y > bricks.rect.y:
+                i.rect.y = bricks.rect.bottom
+                i.y_vel = 7
+                i.state = "FALL"
             else:
                 self.enemies[0].rect.bottom = bricks.rect.top
                 self.enemies[0].y_vel = 0
@@ -709,13 +687,6 @@ class Forest(State):
                         #enemy.rect.bottom = 560
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)
-
-    '''def adjust_sprite_positions(self):
-        """Регулирует спрайты по их скоростям x и y и столкновениям"""
-        self.adjust_hero_position()
-        self.adjust_enemy_position()'''
-        
-    
     
     def get_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
