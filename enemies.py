@@ -21,7 +21,7 @@ class Enemy(pygame.sprite.Sprite):
         self.name = name
         self.direction = direction
         setup_frames()
-        self.image = pygame.Surface((150, 200)).convert()
+        self.image = pygame.Surface(c.HERO_SIZE).convert()
         self.image.set_colorkey((0,0,0))
         self.rect = self.image.get_rect()
         self.rect.x = x
@@ -111,7 +111,7 @@ class Enemy(pygame.sprite.Sprite):
 
 class Mushroom(Enemy):
 
-    def __init__(self, y= c.HEIGHT - c.HEIGHT_OF_GROUND, x=300, direction='left', name='mushroom'):
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames)
         
@@ -123,10 +123,94 @@ class Mushroom(Enemy):
         self.frames = []
 
         for i in range(1, 4):
-            img = pygame.transform.scale(IMAGES["left_" + str(i)], (150, 200))                       
+            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
             self.frames.append(img)
 
+class Spider(Enemy):
 
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+        Enemy.__init__(self)
+        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        
+
+    def setup_frames(self):
+        """Put the image frames in a list to be animated"""
+        self.frame_index = 0
+
+        self.frames = []
+
+        for i in range(1, 4):
+            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+            self.frames.append(img)
+
+class Cop(Enemy):
+
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+        Enemy.__init__(self)
+        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        
+
+    def setup_frames(self):
+        """Put the image frames in a list to be animated"""
+        self.frame_index = 0
+
+        self.frames = []
+
+        for i in range(1, 4):
+            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+            self.frames.append(img)
+
+class Granny(Enemy):
+
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+        Enemy.__init__(self)
+        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        
+
+    def setup_frames(self):
+        """Put the image frames in a list to be animated"""
+        self.frame_index = 0
+
+        self.frames = []
+
+        for i in range(1, 4):
+            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+            self.frames.append(img)
+
+class Bear(Enemy):
+
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+        Enemy.__init__(self)
+        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        
+
+    def setup_frames(self):
+        """Put the image frames in a list to be animated"""
+        self.frame_index = 0
+
+        self.frames = []
+
+        for i in range(1, 4):
+            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+            self.frames.append(img)
+
+class Clown(Enemy):
+
+    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom'):
+        Enemy.__init__(self)
+        self.setup_enemy(x, y, direction, name, self.setup_frames)
+        
+
+    def setup_frames(self):
+        """Put the image frames in a list to be animated"""
+        self.frame_index = 0
+
+        self.frames = []
+
+        for i in range(1, 4):
+            img = pygame.transform.scale(IMAGES["left_" + str(i)], c.HERO_SIZE)                       
+            self.frames.append(img)
+            
     '''def jumped_on(self):
         """When Mario squishes him"""
         self.frame_index = 2
