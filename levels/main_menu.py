@@ -79,20 +79,31 @@ class Hero_Choice(State):
         self.clock = 1
         self.image.blit(IMAGES["main_bg1"], (0, 0))
         screen.blit(self.image, (0, 0))
-        
-        self.surf1 = pygame.Surface((250, 300)).convert()
-        self.surf2 = pygame.Surface(c.HERO_SIZE).convert()
-        self.surf3 = pygame.Surface(c.HERO_SIZE).convert()
 
-        img1 = pygame.transform.scale(IMAGES["hero2"], (250, 300))
-        img2 = pygame.transform.scale(IMAGES["hero1"], (250, 300))
-        img3 = pygame.transform.scale(IMAGES["choose"], (500, 100)) 
+        pygame.draw.rect(screen, (255, 255, 255), (600, 800, 400, 200))
 
-        self.surf1.blit(img1, (0, 0))
-        self.surf2.blit(img2, (0, 0))
-        self.surf3.blit(img3, (0, 0))
-        
-        pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
+        self.image_first = pygame.transform.scale(IMAGES["walk1"], (100, 100))
+        self.image_first.set_colorkey((0, 0, 0))
+        screen.blit(self.image_first, (750, 350))
+
+        pygame.draw.rect(screen, (255, 255, 255), (200, 400, 400, 200))
+
+        self.image_second = pygame.transform.scale(IMAGES["walk1s"], (100, 100))
+        self.image_second.set_colorkey((0, 0, 0))
+        screen.blit(self.image_second, (350, 350))
+
+        self.image_choose = pygame.transform.scale(IMAGES["choose"], (500, 100))
+        #self.image_choose.set_colorkey((0, 0, 0))
+        screen.blit(self.image_choose, (250, 100))
+
+        self.image_start = pygame.transform.scale(IMAGES["start_button"], c.START_SIZE)
+        self.image_start.set_colorkey((0,0,0))
+
+        self.hero1 = 1
+        self.hero2 = 0
+        c.HERO_TYPE = 's'
+
+        screen.blit(self.image_start, (c.WIDTH / 2, c.HEIGHT - c.START_HEIGHT))        
 
     def on_update(self, keys):
         pygame.display.flip()
@@ -105,18 +116,41 @@ class Hero_Choice(State):
         else:
             self.clock += 1
 
+
+
         self.image.blit(self.background[self.background_index], (0, 0))
         screen.blit(self.image, (0, 0))
 
-        screen.blit(self.surf1, (166,200))
-        screen.blit(self.surf2, (582,300))
-        screen.blit(self.surf3, (50,100))
+        pygame.draw.rect(screen, (self.hero2 * 255, self.hero2 * 255, self.hero2 * 255), (300, 300, 200, 200))
+        pygame.draw.rect(screen, (self.hero1 * 255, self.hero1 * 255, self.hero1 * 255), (50, 300, 200, 200))
+
+
+        #self.image_first.set_colorkey((0, 0, 0))
+        screen.blit(self.image_first, (350, 350))
+
         
-        pygame.draw.rect(screen,(255,255,255),(500,300,100,50));
+
+        #self.image_second.set_colorkey((0, 0, 0))
+        screen.blit(self.image_second, (100, 350))
+
+        #self.image_choose.set_colorkey((0, 0, 0))
+        screen.blit(self.image_choose, (250, 100))
+        
+        screen.blit(self.image_start, (c.WIDTH / 2, c.HEIGHT - c.START_HEIGHT))
 
     def get_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pos()[0] >= 500 and pygame.mouse.get_pos()[1] >= 300:
-                if pygame.mouse.get_pos()[0] <= 600 and pygame.mouse.get_pos()[1] <= 350:
+            if pygame.mouse.get_pos()[0] >= c.WIDTH / 2 and pygame.mouse.get_pos()[1] >= c.HEIGHT - c.START_HEIGHT:
+                if pygame.mouse.get_pos()[0] <= c.WIDTH / 2 + c.START_WIDTH and pygame.mouse.get_pos()[1] <= c.HEIGHT:
                     self.done = True
-
+            if pygame.mouse.get_pos()[0] >= 50 and pygame.mouse.get_pos()[1] >= 300:
+                if pygame.mouse.get_pos()[0] <= 250 and pygame.mouse.get_pos()[1] <= 500:
+                    self.hero1 = 1
+                    self.hero2 = 0
+                    c.HERO_TYPE = 's'
+            if pygame.mouse.get_pos()[0] >= 300 and pygame.mouse.get_pos()[1] >= 300:
+                if pygame.mouse.get_pos()[0] <= 500 and pygame.mouse.get_pos()[1] <= 500:
+                    self.hero1 = 0
+                    self.hero2 = 1
+                    c.HERO_TYPE = ''
+                    
