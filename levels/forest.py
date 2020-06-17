@@ -439,20 +439,58 @@ class Forest(State):
         
 
     def set_enemies(self):
-        self.mushroom0 = enemies.Mushroom()
-        mushroom1 = enemies.Mushroom()
-        mushroom2 = enemies.Mushroom()
-        enemy_group1 = pygame.sprite.Group(self.mushroom0)
-        enemy_group2 = pygame.sprite.Group(mushroom1)
-        enemy_group3 = pygame.sprite.Group(mushroom2)
-        self.enemy_group_list = [enemy_group1, enemy_group2, enemy_group3]
+        mushroom0 = enemies.Mushroom(3840, 320)
+        mushroom_group0 = pygame.sprite.Group(mushroom0)
+        mushroom1 = enemies.Mushroom(3000, 400)
+        mushroom_group1 = pygame.sprite.Group(mushroom1)
+        mushroom2 = enemies.Mushroom(1560, 480)
+        mushroom_group2 = pygame.sprite.Group(mushroom2)
+        mushroom3 = enemies.Mushroom(2560, 480)
+        mushroom_group3 = pygame.sprite.Group(mushroom3)
+        mushroom4 = enemies.Mushroom(440, 560)
+        mushroom_group4 = pygame.sprite.Group(mushroom4)
+        mushroom5 = enemies.Mushroom(480, 560)
+        mushroom_group5 = pygame.sprite.Group(mushroom5)
+        mushroom6 = enemies.Mushroom(4240, 560)
+        mushroom_group6 = pygame.sprite.Group(mushroom6)
+        spider0 = enemies.Spider(1560, 240)
+        spider_group0 = pygame.sprite.Group(spider0)
+        spider1 = enemies.Spider(2120, 240)
+        spider_group1 = pygame.sprite.Group(spider1)
+        spider2 = enemies.Spider(600, 520)
+        spider_group2 = pygame.sprite.Group(spider2)
+        spider3 = enemies.Spider(1160, 560)
+        spider_group3 = pygame.sprite.Group(spider3)
+        spider4 = enemies.Spider(2000, 560)
+        spider_group4 = pygame.sprite.Group(spider4)
+        spider5 = enemies.Spider(3000, 560)
+        spider_group5 = pygame.sprite.Group(spider5)
+        spider6 = enemies.Spider(4120, 560)
+        spider_group6 = pygame.sprite.Group(spider6)
+        self.enemy_group_list = [mushroom_group0, mushroom_group1, mushroom_group2, mushroom_group3,
+                                 mushroom_group4, mushroom_group5, mushroom_group6, spider_group0,
+                                 spider_group1, spider_group2, spider_group3, spider_group4,
+                                 spider_group5, spider_group6]
 
     def set_checkpoints(self):
-        '''при столкновении героя с чекпоинтами появляются враги'''
-        check1 = checkpoint.Checkpoint(500, "1")
-        check2 = checkpoint.Checkpoint(1000, '2')
-        check3 = checkpoint.Checkpoint(4550, '3')
-        self.check_point_group = pygame.sprite.Group(check1, check2, check3)
+        check1 = checkpoint.Checkpoint(2840, "1")
+        check2 = checkpoint.Checkpoint(2000, '2')
+        check3 = checkpoint.Checkpoint(560, '3')
+        check4 = checkpoint.Checkpoint(1560, "4")
+        check5 = checkpoint.Checkpoint(110, '5')
+        check6 = checkpoint.Checkpoint(110, '6')
+        check7 = checkpoint.Checkpoint(3240, '7')
+        check8 = checkpoint.Checkpoint(560, "8")
+        check9 = checkpoint.Checkpoint(1120, '9')
+        check10 = checkpoint.Checkpoint(110, '10')
+        check11 = checkpoint.Checkpoint(160, "11")
+        check12 = checkpoint.Checkpoint(1000, '12')
+        check13 = checkpoint.Checkpoint(2000, '13')
+        check14 = checkpoint.Checkpoint(3120, '14')
+        self.check_point_group = pygame.sprite.Group(check1, check2, check3, check4,
+                                                     check5, check6, check7, check8,
+                                                     check9, check10, check11,
+                                                     check12, check13, check14)
 
     def set_spritegroups(self):
         self.enemy_group = pygame.sprite.Group()
@@ -548,11 +586,10 @@ class Forest(State):
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-
         self.coins.draw(self.level)
-        self.hero_and_enemy_group.draw(self.level)
         self.info.draw(self.level)
         self.blocks.draw(self.level)
+        self.hero_and_enemy_group.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         
@@ -562,11 +599,10 @@ class Forest(State):
         checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
         if checkpoint:
             checkpoint.kill()
-            for i in range(1,4):
+            for i in range(1,15):
                 if checkpoint.name == str(i):
-                    print(checkpoint.name)
-                    for index, enemy in enumerate(self.enemy_group_list[i - 1]):
-                        enemy.rect.x = self.viewport.right + (index * 60)
+                    #for index, enemy in enumerate(self.enemy_group_list[i - 1]):
+                        #enemy.rect.x = self.viewport.right + (index * 60)
                         #enemy.rect.bottom = 560
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)

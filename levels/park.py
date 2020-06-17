@@ -5,7 +5,9 @@ from .state import *
 sys.path.append('..')
 
 from init import *
-import hero 
+import hero
+import enemies
+import checkpoint
 from sprites import *
 from sounds import *
 
@@ -37,6 +39,7 @@ class Park(State):
         self.set_enemies()
         self.set_coins()
         self.set_checkpoints()
+        self.set_spritegroups()
 
     def set_hero(self):
         self.hero = hero.Hero()
@@ -429,10 +432,68 @@ class Park(State):
         
 
     def set_enemies(self):
-        self.enemy_group = []
+        bear0 = enemies.Bear(2960, 160)
+        bear_group0 = pygame.sprite.Group(bear0)
+        bear1 = enemies.Bear(3200, 160)
+        bear_group1 = pygame.sprite.Group(bear1)
+        bear2 = enemies.Bear(400, 200)
+        bear_group2 = pygame.sprite.Group(bear2)
+        bear3 = enemies.Bear(1800, 360)
+        bear_group3 = pygame.sprite.Group(bear3)
+        bear4 = enemies.Bear(3960, 400)
+        bear_group4 = pygame.sprite.Group(bear4)
+        bear5 = enemies.Bear(680, 480)
+        bear_group5 = pygame.sprite.Group(bear5)
+        bear6 = enemies.Bear(2080, 560)
+        bear_group6 = pygame.sprite.Group(bear6)
+        clown0 = enemies.Clown(1880, 160)
+        clown_group0 = pygame.sprite.Group(clown0)
+        clown1 = enemies.Clown(3240, 360)
+        clown_group1 = pygame.sprite.Group(clown1)
+        clown2 = enemies.Clown(920, 560)
+        clown_group2 = pygame.sprite.Group(clown2)
+        clown3 = enemies.Clown(1240, 560)
+        clown_group3 = pygame.sprite.Group(clown3)
+        clown4 = enemies.Clown(1560, 560)
+        clown_group4 = pygame.sprite.Group(clown4)
+        clown5 = enemies.Clown(2640, 560)
+        clown_group5 = pygame.sprite.Group(clown5)
+        clown6 = enemies.Clown(3200, 560)
+        clown_group6 = pygame.sprite.Group(clown6)
+        clown7 = enemies.Clown(3240, 560)
+        clown_group7 = pygame.sprite.Group(clown7)
+        self.enemy_group_list = [bear_group0, bear_group1, bear_group2, bear_group3,
+                                bear_group4, bear_group5, bear_group6,
+                                clown_group0, clown_group1, clown_group2, clown_group3,
+                                clown_group4, clown_group5, clown_group6, clown_group7]
 
     def set_checkpoints(self):
-        pass
+        check1 = checkpoint.Checkpoint(1960, "1")
+        check2 = checkpoint.Checkpoint(2200, '2')
+        check3 = checkpoint.Checkpoint(110, '3')
+        check4 = checkpoint.Checkpoint(800, "4")
+        check5 = checkpoint.Checkpoint(1960, '5')
+        check6 = checkpoint.Checkpoint(110, '6')
+        check7 = checkpoint.Checkpoint(1080, '7')
+        check8 = checkpoint.Checkpoint(880, "8")
+        check9 = checkpoint.Checkpoint(2240, '9')
+        check10 = checkpoint.Checkpoint(110, '10')
+        check11 = checkpoint.Checkpoint(240, "11")
+        check12 = checkpoint.Checkpoint(5600, '12')
+        check13 = checkpoint.Checkpoint(1640, '13')
+        check14 = checkpoint.Checkpoint(2200, '14')
+        check15 = checkpoint.Checkpoint(2240, '15')
+        self.check_point_group = pygame.sprite.Group(check1, check2, check3, check4,
+                                                     check5, check6, check7, check8,
+                                                     check9, check10, check11,
+                                                     check12, check13, check14, check15)
+
+
+    def set_spritegroups(self):
+        self.enemy_group = pygame.sprite.Group()
+        self.hero_and_enemy_group = pygame.sprite.Group(self.hero,
+                                                     self.enemy_group)
+
 
     def on_update(self, keys):
         self.update_everything(keys)
@@ -447,6 +508,7 @@ class Park(State):
         self.sprite_positions()
         self.info_coin.update()
         self.end_of_level()
+        self.enemy_group.update(keys)
 
 
     def end_of_level(self):
@@ -454,13 +516,10 @@ class Park(State):
             self.done = True
 
     def sprite_positions(self):
-        """Adjusts sprites by their x and y velocities and collisions"""
         self.hero_position()
 
         
     def hero_position(self):
-        """Adjusts Mario's position based on his x, y velocities and
-        potential collisions"""
         self.last_x_position = self.hero.rect.right
         self.hero.rect.x += round(self.hero.x_vel)
         self.x_collisions_hero()
@@ -528,16 +587,21 @@ class Park(State):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
         self.blocks.draw(self.level)
-        self.pers.draw(self.level)
+        self.hero_and_enemy_group.draw(self.level)
         self.coins.draw(self.level)
         self.info.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
-        #pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
-        pass
+        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
 
     def check_cp(self):
         ''' check check points'''
-        pass
+        checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
+        if checkpoint:
+            checkpoint.kill()
+            for i in range(1,16):
+                if checkpoint.name == str(i):
+                    self.enemy_group.add(self.enemy_group_list[i-1])
+            self.hero_and_enemy_group.add(self.enemy_group)
     
     
     def get_event(self, event):

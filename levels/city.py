@@ -5,7 +5,9 @@ from .state import *
 sys.path.append('..')
 
 from init import *
-import hero 
+import hero
+import enemies
+import checkpoint
 from sprites import *
 from sounds import *
 
@@ -36,6 +38,7 @@ class City(State):
         self.set_coins()
         self.set_enemies()
         self.set_checkpoints()
+        self.set_spritegroups()
 
     def set_hero(self):
         self.hero = hero.Hero()
@@ -385,11 +388,57 @@ class City(State):
         
 
     def set_enemies(self):
-        self.enemy_group = []
+        cop0 = enemies.Cop(2120, 120)
+        cop_group0 = pygame.sprite.Group(cop0)
+        cop1 = enemies.Cop(3160, 160)
+        cop_group1 = pygame.sprite.Group(cop1)
+        cop2 = enemies.Cop(1040, 520)
+        cop_group2 = pygame.sprite.Group(cop2)
+        cop3 = enemies.Cop(600, 560)
+        cop_group3 = pygame.sprite.Group(cop3)
+        cop4 = enemies.Cop(1560, 560)
+        cop_group4 = pygame.sprite.Group(cop4)
+        cop5 = enemies.Cop(2560, 560)
+        cop_group5 = pygame.sprite.Group(cop5)
+        cop6 = enemies.Cop(3440, 560)
+        cop_group6 = pygame.sprite.Group(cop6)
+        cop7 = enemies.Cop(3760, 560)
+        cop_group7 = pygame.sprite.Group(cop7)
+        granny0 = enemies.Granny(2480, 400)
+        granny_group0 = pygame.sprite.Group(granny0)
+        granny1 = enemies.Granny(1320, 520)
+        granny_group1 = pygame.sprite.Group(granny1)
+        granny2 = enemies.Granny(1880, 560)
+        granny_group2 = pygame.sprite.Group(granny2)
+        granny3 = enemies.Granny(4120, 560)
+        granny_group3 = pygame.sprite.Group(granny3)
+        self.enemy_group_list = [cop_group0, cop_group1, cop_group2, cop_group3,
+                                cop_group4, cop_group5, cop_group6, cop_group7,
+                                granny_group0, granny_group1, granny_group2, granny_group3]
+
 
     def set_checkpoints(self):
-        '''при столкновении героя с чекпоинтами появляются враги'''
-        pass
+        check1 = checkpoint.Checkpoint(1120, "1")
+        check2 = checkpoint.Checkpoint(2160, '2')
+        check3 = checkpoint.Checkpoint(110, '3')
+        check4 = checkpoint.Checkpoint(110, "4")
+        check5 = checkpoint.Checkpoint(560, '5')
+        check6 = checkpoint.Checkpoint(1560, '6')
+        check7 = checkpoint.Checkpoint(2440, '7')
+        check8 = checkpoint.Checkpoint(2760, "8")
+        check9 = checkpoint.Checkpoint(1480, '9')
+        check10 = checkpoint.Checkpoint(320, '10')
+        check11 = checkpoint.Checkpoint(880, "11")
+        check12 = checkpoint.Checkpoint(3120, '12')
+        self.check_point_group = pygame.sprite.Group(check1, check2, check3, check4,
+                                                     check5, check6, check7, check8,
+                                                     check9, check10, check11,
+                                                     check12)
+
+    def set_spritegroups(self):
+        self.enemy_group = pygame.sprite.Group()
+
+        self.hero_and_enemy_group = pygame.sprite.Group(self.hero, self.enemy_group)
 
     def on_update(self, keys):
         self.update_everything(keys)
@@ -404,6 +453,7 @@ class City(State):
         self.info_coin.update()
         self.sprite_positions()
         self.end_of_level()
+        self.enemy_group.update(keys)
 
     def end_of_level(self):
         if self.hero.rect.x >= 4900:
@@ -480,17 +530,22 @@ class City(State):
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-
         self.coins.draw(self.level)
-        self.pers.draw(self.level)
+        self.hero_and_enemy_group.draw(self.level)
         self.info.draw(self.level)
         self.blocks.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
 
+
     def check_cp(self):
-        ''' check check points'''
-        pass
+        checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
+        if checkpoint:
+            checkpoint.kill()
+            for i in range(1,13):
+                if checkpoint.name == str(i):
+                    self.enemy_group.add(self.enemy_group_list[i-1])
+            self.hero_and_enemy_group.add(self.enemy_group)
     
     
     def get_event(self, event):
