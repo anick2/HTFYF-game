@@ -39,11 +39,11 @@ class Hero(pygame.sprite.Sprite):
         self.right_fighting = []
 
         for i in range(1, 9):
-            img = pygame.transform.scale(IMAGES["walk" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(IMAGES["walk" + str(i) + c.HERO_TYPE], c.HERO_SIZE)                       
             self.right_walking.append(img)
 
         for i in range(1, 8):
-            img = pygame.transform.scale(IMAGES["hit" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(IMAGES["hit" + str(i) + c.HERO_TYPE], c.HERO_SIZE)                       
             self.right_fighting.append(img)
 
 
