@@ -532,6 +532,7 @@ class Forest(State):
         self.info_coin.update()
         self.sprite_positions()
         self.enemy_group.update(keys)
+        self.coins.update()
         self.end_of_level()
 
 
