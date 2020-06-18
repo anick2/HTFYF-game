@@ -532,7 +532,8 @@ class Forest(State):
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
         self.check_cp()
         self.info_coin.update()
-        self.enemy_group.update(keys)
+        for i in self.enemy_group:
+            i.update(keys)
         self.sprite_positions()
         self.coins.update()
         self.end_of_level()
@@ -616,7 +617,7 @@ class Forest(State):
             else:
                 i.rect.x -= round(i.x_vel)
             self.x_collisions_enemy(i)
-            #self.y_collisions_enemy(i)
+            self.y_collisions_enemy(i)
 
     def x_collisions_enemy(self, i):
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
@@ -641,7 +642,7 @@ class Forest(State):
 
     def y_collisions_enemy(self, i):
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
-        enemy = pygame.sprite.spritecollideany(self.hero, i)
+        #enemy = pygame.sprite.spritecollideany(self.hero, i)
         
         if bricks:
             if i.rect.y > bricks.rect.y:
@@ -649,20 +650,17 @@ class Forest(State):
                 i.y_vel = 7
                 i.state = "FALL"
             else:
-                self.enemies[0].rect.bottom = bricks.rect.top
-                self.enemies[0].y_vel = 0
-                self.enemies[0].state = "WALK"
+                i.rect.bottom = bricks.rect.top
+                i.y_vel = 0
+                i.state = "WALK"
 
+        i.rect.y += 1
 
-        self.enemies[0].rect.y += 1
+        if not pygame.sprite.spritecollideany(i, self.blocks):
+            i.state = "FALL"
 
-        if not pygame.sprite.spritecollideany(self.enemies[0], self.blocks):
-            if self.enemies[0].state != "JUMP":
-                self.enemies[0].state = "FALL"
+        i.rect.y -= 1
 
-        self.hero.rect.y -= 1
-
-        
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
