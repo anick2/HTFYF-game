@@ -793,8 +793,10 @@ class Forest(State):
     def get_event(self, event):
         """Создает кнопку - слудующий уровень"""
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pos()[0] >= 900 and pygame.mouse.get_pos()[1] >= 50:
-                if pygame.mouse.get_pos()[0] <= 950 and pygame.mouse.get_pos()[1] <= 100:
+            if pygame.mouse.get_pos()[0] >= 900 and\
+               pygame.mouse.get_pos()[1] >= 50:
+                if pygame.mouse.get_pos()[0] <= 950 and \
+                   pygame.mouse.get_pos()[1] <= 100:
                     self.done = True
 
     def update_viewport(self):
