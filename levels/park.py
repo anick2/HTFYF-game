@@ -12,12 +12,13 @@ from sprites import *
 from sounds import *
 
 class Park(State):
-    # класс для состояния "парк"
+    """Класс для состояния парк"""
     def __init__(self):
         State.__init__(self)
         self.next_state = "MAIN_MENU"
 
     def set_background(self):
+        """Устанавливает фоновое изображение, прямоугольник и масштабирует его до правильного размера"""
         self.background = IMAGES['park']
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
@@ -32,7 +33,8 @@ class Park(State):
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         
         
-    def on_create(self):      
+    def on_create(self): 
+        """Вызывается при создании объекта"""      
         # self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
@@ -48,6 +50,7 @@ class Park(State):
         self.healing = pygame.sprite.Group(bottle1)
         
     def set_hero(self):
+        """Создание героя"""
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
@@ -57,6 +60,7 @@ class Park(State):
         self.info = pygame.sprite.Group(self.info_coin, self.info_hearts)
 
     def set_coins(self):
+        """Создает все монетки для уровня"""
         coin0 = Coin(1840, 40)
         coin1 = Coin(2680, 40)
         coin2 = Coin(600, 80)
@@ -85,6 +89,7 @@ class Park(State):
 
 
     def set_blocks(self):
+        """Создает все блоки для уровня"""
         block0 = Block(1080, 40, 'park')
         block1 = Block(2640, 40, 'park')
         block2 = Block(1080, 80, 'park')
@@ -459,6 +464,7 @@ class Park(State):
         
 
     def set_enemies(self):
+        """Создание врагов для уровня"""
         bear0 = enemies.Bear(2960, 160)
         bear_group0 = pygame.sprite.Group(bear0)
         bear1 = enemies.Bear(3200, 160)
@@ -489,12 +495,14 @@ class Park(State):
         clown_group6 = pygame.sprite.Group(clown6)
         clown7 = enemies.Clown(3240, 560)
         clown_group7 = pygame.sprite.Group(clown7)
+        self.enemies = [bear0,bear1,bear2,bear3,bear4,bear5,clown0,clown1,clown2,clown3,clown4,clown5,clown6]
         self.enemy_group_list = [bear_group0, bear_group1, bear_group2, bear_group3,
                                 bear_group4, bear_group5, bear_group6,
                                 clown_group0, clown_group1, clown_group2, clown_group3,
                                 clown_group4, clown_group5, clown_group6, clown_group7]
 
     def set_checkpoints(self):
+        """Создание чекпоинтов"""
         check1 = checkpoint.Checkpoint(1960, "1")
         check2 = checkpoint.Checkpoint(2200, '2')
         check3 = checkpoint.Checkpoint(110, '3')
@@ -517,37 +525,45 @@ class Park(State):
 
 
     def set_spritegroups(self):
+        """Создает группу спрайтов"""
         self.enemy_group = pygame.sprite.Group()
         self.hero_and_enemy_group = pygame.sprite.Group(self.hero,
                                                      self.enemy_group)
 
-
     def on_update(self, keys):
+        """ Обновляет весь уровень, используя состояния. Вызывается объектом управления"""
         self.update_everything(keys)
         self.blit_everything()
         self.update_viewport()
 
 
     def update_everything(self, keys):
+        """Обновляет местоположение всех спрайтов на экране"""
         self.hero.update(keys, {})
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
         self.info_hearts.rect.x = self.viewport.x 
         self.check_cp()
-        self.sprite_positions()
         self.info.update()
+        for i in self.enemies:
+            i.update(keys)
+        self.sprite_positions()
+        self.coins.update()
         self.end_of_level()
-        self.enemy_group.update(keys)
 
 
     def end_of_level(self):
+        """Конец уровня"""
         if self.hero.rect.x >= 4900:
             self.done = True
 
     def sprite_positions(self):
+        """Регулирует спрайты по их скоростям x и y и столкновению"""
         self.hero_position()
+        self.enemy_position()
 
-        
     def hero_position(self):
+        """Регулирует положение героя на основе его скоростей x, y и
+         потенциальные столкновения"""
         self.last_x_position = self.hero.rect.right
         self.hero.rect.x += round(self.hero.x_vel)
         self.x_collisions_hero()
@@ -560,6 +576,7 @@ class Park(State):
 
 
     def x_collisions_hero(self):
+        """Проверяет наличие столкновений, когда герой движется вдоль оси X"""
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         coin = pygame.sprite.spritecollideany(self.hero, self.coins)
@@ -597,6 +614,7 @@ class Park(State):
 
 
     def y_collisions_hero(self):
+        """Проверяет наличие столкновений, когда герой движется вдоль оси Y"""
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         
         if bricks:
@@ -617,37 +635,103 @@ class Park(State):
                 self.hero.state = "FALL"
 
         self.hero.rect.y -= 1
-   
+
+
+    def enemy_position(self):
+        """Выбор позиции врага"""
+        for i in self.enemies:
+            self.last_x_position = i.rect.right
+            if i.direction == 'right':
+                i.rect.x += round(i.x_vel)
+            else:
+                i.rect.x -= round(i.x_vel)
+            self.x_collisions_enemy(i)
+            self.y_collisions_enemy(i)
+
+    def x_collisions_enemy(self, i):
+        """Проверяет наличие столкновений, когда враг движется вдоль оси X"""
+        bricks = pygame.sprite.spritecollideany(i, self.blocks)
+        enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
+        #coin = pygame.sprite.spritecollideany(self.enemy_group, self.coins)
+        
+        if bricks:
+            self.x_collisions_solve_enemy(bricks, i)
+        if enemy:
+            self.x_collisions_solve_enemy(self.hero, enemy)
+
+    def x_collisions_solve_enemy(self, collider, i):
+        if i.direction == 'right':
+            i.direction = 'left'
+        else:
+            i.direction = 'right'
+        if i.rect.x < collider.rect.x:
+            i.rect.right = collider.rect.left
+        else:
+            i.rect.left = collider.rect.right
+
+
+    def y_collisions_enemy(self, i):
+        """Проверяет наличие столкновений, когда враг движется вдоль оси Y"""
+        bricks = pygame.sprite.spritecollideany(i, self.blocks)
+        if bricks:
+            print(i.rect.y, bricks.rect.y)
+            if i.rect.y > bricks.rect.y:
+                i.rect.y = bricks.rect.bottom
+                i.y_vel = 0
+                i.state = "FALL"
+            else:
+                i.rect.bottom = bricks.rect.top
+                i.y_vel = 0
+                i.state = "WALK"
+        else:
+            i.rect.y += 1
+            if not pygame.sprite.spritecollideany(i, self.blocks):
+                i.state = "WALK"
+                #i.rect.bottom +=1
+                if i.direction == 'right':
+                    i.direction = 'left'
+                else:
+                    i.direction = 'right'
+            i.rect.y -= 1
+
+
     def blit_everything(self):
+        """Прорисовывает все спрайты на основную поверхность"""
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
-        self.blocks.draw(self.level)
-        self.hero_and_enemy_group.draw(self.level)
         self.coins.draw(self.level)
         self.healing.draw(self.level)
         self.info.draw(self.level)
+        self.blocks.draw(self.level)
+        self.pers.draw(self.level)
+        self.hero_and_enemy_group.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
+        
 
     def check_cp(self):
-        ''' check check points'''
+        """Определяет, если происходит столкновение контрольной точки, удаляет контрольную точку,
+         добавляет врагов в self.enemy_group"""
         checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
         if checkpoint:
             checkpoint.kill()
-            for i in range(1,16):
+            for i in range(1,15):
                 if checkpoint.name == str(i):
+                    #for index, enemy in enumerate(self.enemy_group_list[i - 1]):
+                        #enemy.rect.x = self.viewport.right + (index * 60)
+                        #enemy.rect.bottom = 560
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)
     
-    
     def get_event(self, event):
+        """Создает кнопку - слудующий уровень"""
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pos()[0] >= 600 and pygame.mouse.get_pos()[1] >= 300:
                 if pygame.mouse.get_pos()[0] <= 700 and pygame.mouse.get_pos()[1] <= 350:
                     self.done = True
 
-
     def update_viewport(self):
+        """Меняет вид камеры"""
         if (self.viewport.x <= 4000):
             third = self.viewport.x + self.viewport.w//3
             play_center = self.hero.rect.centerx
@@ -658,4 +742,3 @@ class Park(State):
                 new = self.viewport.x + mult * self.hero.x_vel
                 highest = self.level_rect.w - self.viewport.w
                 self.viewport.x = min(highest, new)
-
