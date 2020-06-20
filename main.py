@@ -9,21 +9,26 @@ from levels.main_menu import *
 from init import *
 
 
+STATES = {"MAIN_MENU": MainMenu(),
+              "FOREST": Forest(),
+              "CITY": City(),
+              "PARK": Park(),
+              "CHOOSE_HERO": Hero_Choice(),
+              "LOOSE_GAME": End()}   
+
 class Game:
     def __init__(self):
         self.screen = screen
         self.keys = pygame.key.get_pressed()
         self.done = False                   #конец игры
         self.fps = 60
-        self.state_dict = {}                #словарь всевозможных состояний
         self.state_name = None              #имя текущего состояния
         self.state = None                   #объект класса текущего состояния
         
-    def setup_states(self, state_dict, start_state):
+    def setup_states(self, start_state):
         '''инициализация состояний'''
-        self.state_dict = state_dict
         self.state_name = start_state
-        self.state = self.state_dict[start_state]
+        self.state = STATES[start_state]
 
     def update(self):
         self.keys = pygame.key.get_pressed()
@@ -31,11 +36,28 @@ class Game:
             self.flip_state()
         self.state.on_update(self.keys)
 
+
+    def rebirth(self, state_name):
+        if state_name == "FOREST":
+            STATES[state_name] = Forest()
+        elif state_name == "CITY":
+            STATES[state_name] = City()
+        elif state_name == "PARK":
+            STATES[state_name] = Park()
+        elif state_name == "MAIN_MENU":
+            STATES[state_name] = MainMenu()
+        elif state_name == "LOOSE_GAME":
+            STATES[state_name] = End()
+        if state_name == "CHOOSE_HERO":
+            STATES[state_name] = Hero_Choice()
+
     def flip_state(self):
         # смена состояний
-        previous, self.state_name = self.state_name, self.state.next
-        self.state = self.state_dict[self.state_name]
+        prev = self.state_name
+        self.state_name = STATES[self.state_name].next_state
+        self.state = STATES[self.state_name]
         self.state.on_create()
+        self.rebirth(prev)
     
     def event_loop(self):
         for event in pygame.event.get():
@@ -71,18 +93,8 @@ class Game:
 
 def main():
     game = Game()
-    states = {"MAIN_MENU": MainMenu(),
-              "FOREST": Forest(),
-              "CITY": City(),
-              "PARK": Park(),
-              "CHOOSE_HERO": Hero_Choice()}                        # словарь состояний 
     first_state = "MAIN_MENU"                        # начальное состояние
-    states["MAIN_MENU"].set_prenex(None, "CHOOSE_HERO")   # объявление состояний
-    states["CHOOSE_HERO"].set_prenex("MAIN_MENU", "FOREST")
-    states["FOREST"].set_prenex("MAIN_MENU", "CITY") 
-    states["CITY"].set_prenex("FOREST", "PARK")
-    states["PARK"].set_prenex("PARK", "MAIN_MENU")
-    game.setup_states(states, first_state)           # установка состояний
+    game.setup_states(first_state)           # установка состояний
     game.start()                                     # начало игры
     
 if __name__ == '__main__':

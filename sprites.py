@@ -53,12 +53,12 @@ class Coin(pygame.sprite.Sprite):
         self.image.blit(img, (0, 0))
 
 
-class Info(pygame.sprite.Sprite):
+class Info_coin(pygame.sprite.Sprite):
 
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.state = None
-        self.number = 0
+        self.number = const.COINS
         self.color = pygame.Color('yellow')
         self.font = pygame.font.SysFont( 'meslolgmboldforpowerlinettf', 30)
         fon = self.font.render(str(self.number) + ' x', True, self.color)
@@ -83,3 +83,42 @@ class Info(pygame.sprite.Sprite):
         self.image.set_colorkey((0,0,0))
         self.image.blit(img, (fon_rect.width + 4, 0))
         self.image.blit(fon, (0, 0))
+        const.COINS = self.number
+
+
+
+
+class Info_hearts(pygame.sprite.Sprite):
+
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.number = 3
+        self.image = pygame.Surface((200, 70)).convert()
+        self.image.set_colorkey((255,255,255))
+        self.rect = self.image.get_rect()
+        self.rect.x = 0
+        self.rect.y = 0
+
+    def update(self):
+        img = pygame.transform.scale(IMAGES['hearts' + str(self.number)], (200, 70))
+        self.image.set_colorkey((255,255,255))
+        self.image.blit(img, (0, 0))
+
+
+class Heal(pygame.sprite.Sprite):
+
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.image = pygame.Surface((20,30)).convert()
+        self.rect = self.image.get_rect()
+        img = pygame.transform.scale(IMAGES['bottle'], (20, 30))
+        img.set_colorkey((255,255,255))
+        self.image.set_colorkey((255,255,255))
+        self.image.blit(img, (0, 0))
+        self.rect.x = x
+        self.rect.y = y
+
+
+        
