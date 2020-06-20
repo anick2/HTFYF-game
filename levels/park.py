@@ -15,6 +15,7 @@ class Park(State):
     # класс для состояния "парк"
     def __init__(self):
         State.__init__(self)
+        self.next_state = "MAIN_MENU"
 
     def set_background(self):
         self.background = IMAGES['park']
@@ -38,16 +39,22 @@ class Park(State):
         self.set_blocks()
         self.set_enemies()
         self.set_coins()
+        self.set_healing()
         self.set_checkpoints()
         self.set_spritegroups()
 
+    def set_healing(self):
+        bottle1 = Heal(200, 540)
+        self.healing = pygame.sprite.Group(bottle1)
+        
     def set_hero(self):
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
         self.pers = pygame.sprite.Group(self.hero)
-        self.info_coin = Info()
-        self.info = pygame.sprite.Group(self.info_coin)
+        self.info_coin = Info_coin()
+        self.info_hearts = Info_hearts()
+        self.info = pygame.sprite.Group(self.info_coin, self.info_hearts)
 
     def set_coins(self):
         coin0 = Coin(1840, 40)
@@ -78,8 +85,6 @@ class Park(State):
 
 
     def set_blocks(self):
-        self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
-
         block0 = Block(1080, 40, 'park')
         block1 = Block(2640, 40, 'park')
         block2 = Block(1080, 80, 'park')
@@ -526,9 +531,10 @@ class Park(State):
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
+        self.info_hearts.rect.x = self.viewport.x 
         self.check_cp()
         self.sprite_positions()
-        self.info_coin.update()
+        self.info.update()
         self.end_of_level()
         self.enemy_group.update(keys)
 
@@ -557,6 +563,7 @@ class Park(State):
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         coin = pygame.sprite.spritecollideany(self.hero, self.coins)
+        bottle = pygame.sprite.spritecollideany(self.hero, self.healing)
         
         if bricks:
             self.x_collisions_solve(bricks)
@@ -565,11 +572,20 @@ class Park(State):
             if self.hero.flag == True:
                 enemy.kill()
             else:
+                self.info_hearts.number -= 1
+                if self.info_hearts.number == 0:
+                    self.next_state = "LOOSE_GAME"
+                    self.done = True
                 self.x_collisions_solve(enemy)
 
         if coin:
             self.info_coin.number += 1
             coin.kill()
+                
+        if bottle:
+            if self.info_hearts.number < 3:
+                self.info_hearts.number += 1
+            bottle.kill()
 
 
     def x_collisions_solve(self, collider):
@@ -601,16 +617,14 @@ class Park(State):
                 self.hero.state = "FALL"
 
         self.hero.rect.y -= 1
-
-
-
-        
+   
     def blit_everything(self):
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
         self.blocks.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
         self.coins.draw(self.level)
+        self.healing.draw(self.level)
         self.info.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));

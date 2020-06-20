@@ -1,5 +1,4 @@
 import pygame
-import main
 import const as c
 from init import *
 

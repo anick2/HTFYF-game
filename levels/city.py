@@ -14,6 +14,7 @@ from sounds import *
 class City(State):          
     def __init__(self):
         State.__init__(self)
+        self.next_state = "PARK"
 
     def set_background(self):
         self.background = IMAGES['city']
@@ -35,20 +36,24 @@ class City(State):
         self.set_background()
         self.set_hero()
         self.set_blocks()
-        self.set_coins()
         self.set_enemies()
+        self.set_coins()
+        self.set_healing()
         self.set_checkpoints()
         self.set_spritegroups()
+
+    def set_healing(self):
+        bottle1 = Heal(200, 540)
+        self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
         self.pers = pygame.sprite.Group(self.hero)
-        self.info_coin = Info()
-        self.info = pygame.sprite.Group(self.info_coin)
-        
-        pass
+        self.info_coin = Info_coin()
+        self.info_hearts = Info_hearts()
+        self.info = pygame.sprite.Group(self.info_coin, self.info_hearts)
 
     def set_coins(self):
         coin0 = Coin(680, 40)
@@ -79,8 +84,6 @@ class City(State):
 
 
     def set_blocks(self):
-        self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
-
         block0 = Block(2040, 120, 'city')
         block1 = Block(2080, 120, 'city')
         block2 = Block(2120, 120, 'city')
@@ -459,7 +462,6 @@ class City(State):
 
     def set_spritegroups(self):
         self.enemy_group = pygame.sprite.Group()
-
         self.hero_and_enemy_group = pygame.sprite.Group(self.hero, self.enemy_group)
 
     def on_update(self, keys):
@@ -471,9 +473,11 @@ class City(State):
     def update_everything(self, keys):
         self.hero.update(keys, {})
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
+        self.info_hearts.rect.x = self.viewport.x 
         self.check_cp()
-        self.info_coin.update()
+        self.info.update()
         self.sprite_positions()
+        self.coins.update()
         self.end_of_level()
         self.enemy_group.update(keys)
 
@@ -483,7 +487,6 @@ class City(State):
             
     def sprite_positions(self):
         self.hero_position()
-
         
     def hero_position(self):
         self.last_x_position = self.hero.rect.right
@@ -501,6 +504,7 @@ class City(State):
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         coin = pygame.sprite.spritecollideany(self.hero, self.coins)
+        bottle = pygame.sprite.spritecollideany(self.hero, self.healing)
         
         if bricks:
             self.x_collisions_solve(bricks)
@@ -509,11 +513,20 @@ class City(State):
             if self.hero.flag == True:
                 enemy.kill()
             else:
+                self.info_hearts.number -= 1
+                if self.info_hearts.number == 0:
+                    self.next_state = "LOOSE_GAME"
+                    self.done = True
                 self.x_collisions_solve(enemy)
 
         if coin:
             self.info_coin.number += 1
             coin.kill()
+                
+        if bottle:
+            if self.info_hearts.number < 3:
+                self.info_hearts.number += 1
+            bottle.kill()
 
 
     def x_collisions_solve(self, collider):
@@ -556,6 +569,7 @@ class City(State):
         self.hero_and_enemy_group.draw(self.level)
         self.info.draw(self.level)
         self.blocks.draw(self.level)
+        self.healing.draw(self.level)
         screen.blit(self.level, (0,0), self.viewport)
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
 
