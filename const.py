@@ -1,6 +1,3 @@
-import load
-import os
-
 WIDTH = 1000
 HEIGHT = 600
 
@@ -35,5 +32,5 @@ MAX_Y_VEL = 15
 MAX_WALK_SPEED = 3
 
 HERO_TYPE = ''
- 
+
 COINS = 0
