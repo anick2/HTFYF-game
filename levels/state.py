@@ -1,10 +1,9 @@
-import pygame
 
 class State:
     def __init__(self):
-        self.done     = False # состояние завершилось
-        self.next     = None  # следубщее состояние
-        self.prev     = None  # предудущее состояние
+        self.done = False  # состояние завершилось
+        self.next = None   # следубщее состояние
+        self.prev = None   # предудущее состояние
 
     # запускается при создании
     def on_create(self):
@@ -20,5 +19,5 @@ class State:
 
     # задаем соседние состояния
     def set_prenex(self, pre, nex):
-        self.next = nex;
-        self.prev = pre;
+        self.next = nex
+        self.prev = pre

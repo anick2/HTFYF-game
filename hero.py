@@ -118,7 +118,7 @@ class Hero(pygame.sprite.Sprite):
             self.state = "WALK"
             self.facing_right = False
 
-        elif keys[pygame.K_w]:
+        elif keys[pygame.K_w] and self.allow_jump:
             self.state = "JUMP"
             self.y_vel = c.JUMP_VEL
 
