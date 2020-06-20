@@ -79,7 +79,6 @@ class Hero_Choice(State):
         self.clock = 1
         self.image.blit(IMAGES["main_bg1"], (0, 0))
         screen.blit(self.image, (0, 0))
-
         pygame.draw.rect(screen, (255, 255, 255), (600, 800, 400, 200))
 
         self.image_first = pygame.transform.scale(IMAGES["walk1"], (100, 100))
@@ -92,9 +91,9 @@ class Hero_Choice(State):
         self.image_second.set_colorkey((0, 0, 0))
         screen.blit(self.image_second, (350, 350))
 
-        self.image_choose = pygame.transform.scale(IMAGES["choose"], (500, 100))
-        #self.image_choose.set_colorkey((0, 0, 0))
-        screen.blit(self.image_choose, (250, 100))
+        self.image_choose = pygame.transform.scale(IMAGES["choose"], c.CHOOSE_SIZE)
+        self.image_choose.set_colorkey((0, 0, 0))
+        screen.blit(self.image_choose, (c.WIDTH / 2 - c.CHOOSE_WIDTH / 2, 0))
 
         self.image_start = pygame.transform.scale(IMAGES["start_button"], c.START_SIZE)
         self.image_start.set_colorkey((0,0,0))
@@ -134,7 +133,7 @@ class Hero_Choice(State):
         screen.blit(self.image_second, (100, 350))
 
         #self.image_choose.set_colorkey((0, 0, 0))
-        screen.blit(self.image_choose, (250, 100))
+        screen.blit(self.image_choose, (c.WIDTH / 2 - c.CHOOSE_WIDTH / 2, 0))
         
         screen.blit(self.image_start, (c.WIDTH / 2, c.HEIGHT - c.START_HEIGHT))
 
