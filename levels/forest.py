@@ -15,7 +15,7 @@ class Forest(State):
     """Класс для состояния лес"""
     def __init__(self):
         State.__init__(self)
-        self.next_state = "City"
+        self.next_state = "CITY"
 
     def set_background(self):
         """Устанавливает фоновое изображение,
@@ -29,7 +29,6 @@ class Forest(State):
         self.viewport = screen.get_rect(bottom=self.level_rect.bottom)
         self.level.blit(self.background, (0, 0))
         screen.blit(self.level, (0, 0), self.viewport)
-        pygame.draw.rect(screen, (255, 255, 255), (600, 300, 100, 50))
 
     def on_create(self):
         """Вызывается при создании объекта"""
@@ -44,7 +43,7 @@ class Forest(State):
         self.set_spritegroups()
 
     def set_healing(self):
-        bottle1 = Heal(200, 540)
+        bottle1 = Heal(2040, 440)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):
@@ -777,7 +776,6 @@ class Forest(State):
         self.healing.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
         screen.blit(self.level, (0, 0), self.viewport)
-        pygame.draw.rect(screen, (255, 255, 255), (600, 300, 100, 50))
 
     def check_cp(self):
         '''Определяет, если происходит столкновение контрольной точки,
@@ -791,6 +789,13 @@ class Forest(State):
                 if checkpoint.name == str(i):
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)
+
+    def get_event(self, event):
+        """Создает кнопку - слудующий уровень"""
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pos()[0] >= 900 and pygame.mouse.get_pos()[1] >= 50:
+                if pygame.mouse.get_pos()[0] <= 950 and pygame.mouse.get_pos()[1] <= 100:
+                    self.done = True
 
     def update_viewport(self):
         """Меняет вид камеры"""
