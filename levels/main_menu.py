@@ -82,13 +82,13 @@ class Hero_Choice(State):
         screen.blit(self.image, (0, 0))
         pygame.draw.rect(screen, (255, 255, 255), (600, 800, 400, 200))
 
-        self.image_first = pygame.transform.scale(IMAGES["walk1"], (100, 100))
+        self.image_first = pygame.transform.scale(IMAGES["pers_1"], (100, 100))
         self.image_first.set_colorkey((0, 0, 0))
         screen.blit(self.image_first, (750, 350))
 
         pygame.draw.rect(screen, (255, 255, 255), (200, 400, 400, 200))
 
-        self.image_second = pygame.transform.scale(IMAGES["walk1s"], (100, 100))
+        self.image_second = pygame.transform.scale(IMAGES["pers_2"], (100, 100))
         self.image_second.set_colorkey((0, 0, 0))
         screen.blit(self.image_second, (350, 350))
 
