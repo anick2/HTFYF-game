@@ -15,7 +15,7 @@ class Forest(State):
     """Класс для состояния лес"""
     def __init__(self):
         State.__init__(self)
-        self.next_state = "City"
+        self.next_state = "CITY"
 
     def set_background(self):
         """Устанавливает фоновое изображение,
@@ -791,6 +791,15 @@ class Forest(State):
                 if checkpoint.name == str(i):
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)
+
+    def get_event(self, event):
+        """Создает кнопку - слудующий уровень"""
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if pygame.mouse.get_pos()[0] >= 600 and\
+               pygame.mouse.get_pos()[1] >= 300:
+                if pygame.mouse.get_pos()[0] <= 700 and \
+                   pygame.mouse.get_pos()[1] <= 350:
+                    self.done = True
 
     def update_viewport(self):
         """Меняет вид камеры"""
