@@ -1,41 +1,39 @@
 import sys
 import pygame
-from .state import *
-
-sys.path.append('..')
-
-from init import *
+from .state import State
+from init import screen, IMAGES
 import hero
 import enemies
 import checkpoint
-from sprites import *
-from sounds import *
+from sprites import Block, Coin, Info_coin, Info_hearts, Heal
+from sounds import Sound
 
-class Forest(State): 
-    """Класс для состояния лес"""         
+sys.path.append('..')
+
+
+class Forest(State):
+    """Класс для состояния лес"""
     def __init__(self):
         State.__init__(self)
         self.next_state = "City"
 
     def set_background(self):
-        """Устанавливает фоновое изображение, прямоугольник и масштабирует его до правильного размера"""
+        """Устанавливает фоновое изображение,
+           прямоугольник и масштабирует его до правильного размера"""
         self.background = IMAGES['forest']
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
         height = self.back_rect.height
-        
         self.level = pygame.Surface((width, height)).convert()
         self.level_rect = self.level.get_rect()
         self.viewport = screen.get_rect(bottom=self.level_rect.bottom)
-        
         self.level.blit(self.background, (0, 0))
-        screen.blit(self.level, (0,0), self.viewport)
-        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
-        
-        
+        screen.blit(self.level, (0, 0), self.viewport)
+        pygame.draw.rect(screen, (255, 255, 255), (600, 300, 100, 50))
+
     def on_create(self):
-        """Вызывается при создании объекта"""   
-        # self.sound_player = Sound("FOREST")
+        """Вызывается при создании объекта"""
+        self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
         self.set_blocks()
@@ -58,7 +56,6 @@ class Forest(State):
         self.info_coin = Info_coin()
         self.info_hearts = Info_hearts()
         self.info = pygame.sprite.Group(self.info_coin, self.info_hearts)
-
 
     def set_coins(self):
         """Создает все монетки для уровня"""
@@ -83,10 +80,10 @@ class Forest(State):
         coin18 = Coin(3280, 520)
         coin19 = Coin(3960, 520)
         self.coins = pygame.sprite.Group(coin0, coin1, coin2, coin3,
-                                        coin4, coin5, coin6, coin7,
-                                        coin8, coin9, coin10, coin11,
-                                        coin12, coin13, coin14, coin15,
-                                        coin16, coin17, coin18, coin19)
+                                         coin4, coin5, coin6, coin7,
+                                         coin8, coin9, coin10, coin11,
+                                         coin12, coin13, coin14, coin15,
+                                         coin16, coin17, coin18, coin19)
 
     def set_blocks(self):
         """Создает все блоки для уровня"""
@@ -392,83 +389,157 @@ class Forest(State):
         block299 = Block(4920, 560, 'forest')
         block300 = Block(4960, 560, 'forest')
 
-        self.blocks = pygame.sprite.Group(block0, block1, block2, block3,
-                                        block4, block5, block6, block7,
-                                        block8, block9, block10, block11,
-                                        block12, block13, block14, block15,
-                                        block16, block17, block18, block19,
-                                        block20, block21, block22, block23,
-                                        block24, block25, block26, block27,
-                                        block28, block29, block30, block31,
-                                        block32, block33, block34, block35,
-                                        block36, block37, block38, block39,
-                                        block40, block41, block42, block43,
-                                        block44, block45, block46, block47,
-                                        block48, block49, block50, block51,
-                                        block52, block53, block54, block55,
-                                        block56, block57, block58, block59,
-                                        block60, block61, block62, block63,
-                                        block64, block65, block66, block67,
-                                        block68, block69, block70, block71,
-                                        block72, block73, block74, block75,
-                                        block76, block77, block78, block79,
-                                        block80, block81, block82, block83,
-                                        block84, block85, block86, block87,
-                                        block88, block89, block90, block91,
-                                        block92, block93, block94, block95,
-                                        block96, block97, block98, block99,
-                                        block100, block101, block102, block103,
-                                        block104, block105, block106, block107,
-                                        block108, block109, block110, block111,
-                                        block112, block113, block114, block115,
-                                        block116, block117, block118, block119,
-                                        block120, block121, block122, block123,
-                                        block124, block125, block126, block127,
-                                        block128, block129, block130, block131,
-                                        block132, block133, block134, block135,
-                                        block136, block137, block138, block139,
-                                        block140, block141, block142, block143,
-                                        block144, block145, block146, block147,
-                                        block148, block149, block150, block151,
-                                        block152, block153, block154, block155,
-                                        block156, block157, block158, block159,
-                                        block160, block161, block162, block163,
-                                        block164, block165, block166, block167,
-                                        block168, block169, block170, block171,
-                                        block172, block173, block174, block175,
-                                        block176, block177, block178, block179,
-                                        block180, block181, block182, block183,
-                                        block184, block185, block186, block187,
-                                        block188, block189, block190, block191,
-                                        block192, block193, block194, block195,
-                                        block196, block197, block198, block199,
-                                        block200, block201, block202, block203,
-                                        block204, block205, block206, block207,
-                                        block208, block209, block210, block211,
-                                        block212, block213, block214, block215,
-                                        block216, block217, block218, block219,
-                                        block220, block221, block222, block223,
-                                        block224, block225, block226, block227,
-                                        block228, block229, block230, block231,
-                                        block232, block233, block234, block235,
-                                        block236, block237, block238, block239,
-                                        block240, block241, block242, block243,
-                                        block244, block245, block246, block247,
-                                        block248, block249, block250, block251,
-                                        block252, block253, block254, block255,
-                                        block256, block257, block258, block259,
-                                        block260, block261, block262, block263,
-                                        block264, block265, block266, block267,
-                                        block268, block269, block270, block271,
-                                        block272, block273, block274, block275,
-                                        block276, block277, block278, block279,
-                                        block280, block281, block282, block283,
-                                        block284, block285, block286, block287,
-                                        block288, block289, block290, block291,
-                                        block292, block293, block294, block295,
-                                        block296, block297, block298, block299,
-                                        block300)
-        
+        self.blocks = pygame.sprite.Group(block0, block1,
+                                          block2, block3,
+                                          block4, block5,
+                                          block6, block7,
+                                          block8, block9,
+                                          block10, block11,
+                                          block12, block13,
+                                          block14, block15,
+                                          block16, block17,
+                                          block18, block19,
+                                          block20, block21,
+                                          block22, block23,
+                                          block24, block25,
+                                          block26, block27,
+                                          block28, block29,
+                                          block30, block31,
+                                          block32, block33,
+                                          block34, block35,
+                                          block36, block37,
+                                          block38, block39,
+                                          block40, block41,
+                                          block42, block43,
+                                          block44, block45,
+                                          block46, block47,
+                                          block48, block49,
+                                          block50, block51,
+                                          block52, block53,
+                                          block54, block55,
+                                          block56, block57,
+                                          block58, block59,
+                                          block60, block61,
+                                          block62, block63,
+                                          block64, block65,
+                                          block66, block67,
+                                          block68, block69,
+                                          block70, block71,
+                                          block72, block73,
+                                          block74, block75,
+                                          block76, block77,
+                                          block78, block79,
+                                          block80, block81,
+                                          block82, block83,
+                                          block84, block85,
+                                          block86, block87,
+                                          block88, block89,
+                                          block90, block91,
+                                          block92, block93,
+                                          block94, block95,
+                                          block96, block97,
+                                          block98, block99,
+                                          block100, block101,
+                                          block102, block103,
+                                          block104, block105,
+                                          block106, block107,
+                                          block108, block109,
+                                          block110, block111,
+                                          block112, block113,
+                                          block114, block115,
+                                          block116, block117,
+                                          block118, block119,
+                                          block120, block121,
+                                          block122, block123,
+                                          block124, block125,
+                                          block126, block127,
+                                          block128, block129,
+                                          block130, block131,
+                                          block132, block133,
+                                          block134, block135,
+                                          block136, block137,
+                                          block138, block139,
+                                          block140, block141,
+                                          block142, block143,
+                                          block144, block145,
+                                          block146, block147,
+                                          block148, block149,
+                                          block150, block151,
+                                          block152, block153,
+                                          block154, block155,
+                                          block156, block157,
+                                          block158, block159,
+                                          block160, block161,
+                                          block162, block163,
+                                          block164, block165,
+                                          block166, block167,
+                                          block168, block169,
+                                          block170, block171,
+                                          block172, block173,
+                                          block174, block175,
+                                          block176, block177,
+                                          block178, block179,
+                                          block180, block181,
+                                          block182, block183,
+                                          block184, block185,
+                                          block186, block187,
+                                          block188, block189,
+                                          block190, block191,
+                                          block192, block193,
+                                          block194, block195,
+                                          block196, block197,
+                                          block198, block199,
+                                          block200, block201,
+                                          block202, block203,
+                                          block204, block205,
+                                          block206, block207,
+                                          block208, block209,
+                                          block210, block211,
+                                          block212, block213,
+                                          block214, block215,
+                                          block216, block217,
+                                          block218, block219,
+                                          block220, block221,
+                                          block222, block223,
+                                          block224, block225,
+                                          block226, block227,
+                                          block228, block229,
+                                          block230, block231,
+                                          block232, block233,
+                                          block234, block235,
+                                          block236, block237,
+                                          block238, block239,
+                                          block240, block241,
+                                          block242, block243,
+                                          block244, block245,
+                                          block246, block247,
+                                          block248, block249,
+                                          block250, block251,
+                                          block252, block253,
+                                          block254, block255,
+                                          block256, block257,
+                                          block258, block259,
+                                          block260, block261,
+                                          block262, block263,
+                                          block264, block265,
+                                          block266, block267,
+                                          block268, block269,
+                                          block270, block271,
+                                          block272, block273,
+                                          block274, block275,
+                                          block276, block277,
+                                          block278, block279,
+                                          block280, block281,
+                                          block282, block283,
+                                          block284, block285,
+                                          block286, block287,
+                                          block288, block289,
+                                          block290, block291,
+                                          block292, block293,
+                                          block294, block295,
+                                          block296, block297,
+                                          block298, block299,
+                                          block300)
 
     def set_enemies(self):
         """Создает врагов для уровня"""
@@ -500,12 +571,17 @@ class Forest(State):
         spider_group5 = pygame.sprite.Group(spider5)
         spider6 = enemies.Spider(4120, 560)
         spider_group6 = pygame.sprite.Group(spider6)
-        self.enemies = [mushroom0,mushroom1,mushroom2,mushroom3,mushroom4,mushroom5,mushroom6,spider1,spider2,spider3,spider4,spider5,spider6]
-        self.enemy_group_list = [mushroom_group0, mushroom_group1, mushroom_group2, mushroom_group3,
-                                 mushroom_group4, mushroom_group5, mushroom_group6, spider_group0,
-                                 spider_group1, spider_group2, spider_group3, spider_group4,
+        self.enemies = [mushroom0, mushroom1, mushroom2,
+                        mushroom3, mushroom4,
+                        mushroom5, mushroom6, spider1, spider2,
+                        spider3, spider4, spider5, spider6]
+        self.enemy_group_list = [mushroom_group0, mushroom_group1,
+                                 mushroom_group2, mushroom_group3,
+                                 mushroom_group4, mushroom_group5,
+                                 mushroom_group6, spider_group0,
+                                 spider_group1, spider_group2,
+                                 spider_group3, spider_group4,
                                  spider_group5, spider_group6]
-
 
     def set_checkpoints(self):
         """Создает чекпоинты"""
@@ -523,8 +599,10 @@ class Forest(State):
         check12 = checkpoint.Checkpoint(1000, '12')
         check13 = checkpoint.Checkpoint(2000, '13')
         check14 = checkpoint.Checkpoint(3120, '14')
-        self.check_point_group = pygame.sprite.Group(check1, check2, check3, check4,
-                                                     check5, check6, check7, check8,
+        self.check_point_group = pygame.sprite.Group(check1, check2,
+                                                     check3, check4,
+                                                     check5, check6,
+                                                     check7, check8,
                                                      check9, check10, check11,
                                                      check12, check13, check14)
 
@@ -532,20 +610,20 @@ class Forest(State):
         """Создает группу спрайтов"""
         self.enemy_group = pygame.sprite.Group()
         self.hero_and_enemy_group = pygame.sprite.Group(self.hero,
-                                                     self.enemy_group)
+                                                        self.enemy_group)
 
     def on_update(self, keys):
-        """ Обновляет весь уровень, используя состояния. Вызывается объектом управления"""
+        """ Обновляет весь уровень, используя состояния.
+            Вызывается объектом управления"""
         self.update_everything(keys)
         self.blit_everything()
         self.update_viewport()
-
 
     def update_everything(self, keys):
         """Обновляет местоположение всех спрайтов на экране"""
         self.hero.update(keys, {})
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
-        self.info_hearts.rect.x = self.viewport.x 
+        self.info_hearts.rect.x = self.viewport.x
         self.check_cp()
         self.info.update()
         for i in self.enemies:
@@ -553,7 +631,6 @@ class Forest(State):
         self.sprite_positions()
         self.coins.update()
         self.end_of_level()
-
 
     def end_of_level(self):
         """Конец уровня"""
@@ -578,19 +655,18 @@ class Forest(State):
         if self.hero.rect.x < (self.viewport.x + 5):
             self.hero.rect.x = (self.viewport.x + 5)
 
-
     def x_collisions_hero(self):
         """Проверяет наличие столкновений, когда герой движется вдоль оси X"""
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         coin = pygame.sprite.spritecollideany(self.hero, self.coins)
         bottle = pygame.sprite.spritecollideany(self.hero, self.healing)
-        
+
         if bricks:
             self.x_collisions_solve(bricks)
 
-        if enemy:
-            if self.hero.flag == True:
+        elif enemy:
+            if self.hero.flag:
                 enemy.kill()
             else:
                 self.info_hearts.number -= 1
@@ -599,11 +675,11 @@ class Forest(State):
                     self.done = True
                 self.x_collisions_solve(enemy)
 
-        if coin:
+        elif coin:
             self.info_coin.number += 1
             coin.kill()
-                
-        if bottle:
+
+        elif bottle:
             if self.info_hearts.number < 3:
                 self.info_hearts.number += 1
             bottle.kill()
@@ -616,11 +692,10 @@ class Forest(State):
         else:
             self.hero.rect.left = collider.rect.right
 
-
     def y_collisions_hero(self):
         """Проверяет наличие столкновений, когда герой движется вдоль оси Y"""
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
-        
+
         if bricks:
             if self.hero.rect.y > bricks.rect.y:
                 self.hero.rect.y = bricks.rect.bottom
@@ -630,7 +705,6 @@ class Forest(State):
                 self.hero.rect.bottom = bricks.rect.top
                 self.hero.y_vel = 0
                 self.hero.state = "WALK"
-
 
         self.hero.rect.y += 1
 
@@ -654,8 +728,7 @@ class Forest(State):
         """Проверяет наличие столкновений, когда враг движется вдоль оси X"""
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
-        #coin = pygame.sprite.spritecollideany(self.enemy_group, self.coins)
-        
+
         if bricks:
             self.x_collisions_solve_enemy(bricks, i)
         if enemy:
@@ -670,7 +743,6 @@ class Forest(State):
             i.rect.right = collider.rect.left
         else:
             i.rect.left = collider.rect.right
-
 
     def y_collisions_enemy(self, i):
         """Проверяет наличие столкновений, когда враг движется вдоль оси Y"""
@@ -695,7 +767,6 @@ class Forest(State):
                     i.direction = 'right'
             i.rect.y -= 1
 
-
     def blit_everything(self):
         """Прорисовывает все спрайты на основную поверхность"""
         pygame.display.flip()
@@ -705,30 +776,21 @@ class Forest(State):
         self.blocks.draw(self.level)
         self.healing.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
-        screen.blit(self.level, (0,0), self.viewport)
-        pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
-        
+        screen.blit(self.level, (0, 0), self.viewport)
+        pygame.draw.rect(screen, (255, 255, 255), (600, 300, 100, 50))
 
     def check_cp(self):
-        '''Определяет, если происходит столкновение контрольной точки, удаляет контрольную точку,
-         добавляет врагов в self.enemy_group'''
-        checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
+        '''Определяет, если происходит столкновение контрольной точки,
+           удаляет контрольную точку,
+           добавляет врагов в self.enemy_group'''
+        checkpoint = pygame.sprite.spritecollideany(self.hero,
+                                                    self.check_point_group)
         if checkpoint:
             checkpoint.kill()
-            for i in range(1,15):
+            for i in range(1, 15):
                 if checkpoint.name == str(i):
-                    #for index, enemy in enumerate(self.enemy_group_list[i - 1]):
-                        #enemy.rect.x = self.viewport.right + (index * 60)
-                        #enemy.rect.bottom = 560
                     self.enemy_group.add(self.enemy_group_list[i-1])
             self.hero_and_enemy_group.add(self.enemy_group)
-    
-    def get_event(self, event):
-        """Создает кнопку - слудующий уровень"""
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pos()[0] >= 600 and pygame.mouse.get_pos()[1] >= 300:
-                if pygame.mouse.get_pos()[0] <= 700 and pygame.mouse.get_pos()[1] <= 350:
-                    self.done = True
 
     def update_viewport(self):
         """Меняет вид камеры"""
