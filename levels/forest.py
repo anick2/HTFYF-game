@@ -471,7 +471,7 @@ class Forest(State):
         mushroom_group3 = pygame.sprite.Group(mushroom3)
         mushroom4 = enemies.Mushroom(440, 560)
         mushroom_group4 = pygame.sprite.Group(mushroom4)
-        mushroom5 = enemies.Mushroom(480, 560)
+        mushroom5 = enemies.Mushroom(1800, 560)
         mushroom_group5 = pygame.sprite.Group(mushroom5)
         mushroom6 = enemies.Mushroom(4240, 560)
         mushroom_group6 = pygame.sprite.Group(mushroom6)
@@ -641,25 +641,27 @@ class Forest(State):
 
 
     def y_collisions_enemy(self, i):
+        """Проверяет наличие столкновений, когда враг движется вдоль оси Y"""
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
-        #enemy = pygame.sprite.spritecollideany(self.hero, i)
-        
         if bricks:
+            print(i.rect.y, bricks.rect.y)
             if i.rect.y > bricks.rect.y:
                 i.rect.y = bricks.rect.bottom
-                i.y_vel = 7
+                i.y_vel = 0
                 i.state = "FALL"
             else:
                 i.rect.bottom = bricks.rect.top
                 i.y_vel = 0
                 i.state = "WALK"
-
-        i.rect.y += 1
-
-        if not pygame.sprite.spritecollideany(i, self.blocks):
-            i.state = "FALL"
-
-        i.rect.y -= 1
+        else:
+            i.rect.y += 1
+            if not pygame.sprite.spritecollideany(i, self.blocks):
+                i.state = "WALK"
+                if i.direction == 'right':
+                    i.direction = 'left'
+                else:
+                    i.direction = 'right'
+            i.rect.y -= 1
 
     def blit_everything(self):
         pygame.display.flip()
