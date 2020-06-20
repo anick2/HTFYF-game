@@ -1,6 +1,6 @@
 import pygame
 import const as c
-from init import *
+import init
 
 
 class Enemy(pygame.sprite.Sprite):
@@ -14,13 +14,13 @@ class Enemy(pygame.sprite.Sprite):
         self.right_frames = []
         self.frame_index = 0
         self.death_timer = 0
-        self.state = state 
+        self.state = state
         self.flag = False
         self.name = name
         self.direction = direction
         setup_frames()
         self.image = pygame.Surface(c.HERO_SIZE).convert()
-        self.image.set_colorkey((0,0,0))
+        self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.x = x
         self.rect.bottom = y
@@ -39,7 +39,7 @@ class Enemy(pygame.sprite.Sprite):
             self.falling()
 
     def walking(self):
-        """Хотьба"""
+        """Хоdьба"""
         if self.name == 'mushroom':
             max_frames_hit = 3
             max_frames_walk = 8
@@ -47,21 +47,21 @@ class Enemy(pygame.sprite.Sprite):
             max_frames_walk = 3
 
         if self.state == "HIT_WALK":
-            if self.flag == False:
+            if not self.flag:
                 self.frame_index = 0
                 self.flag = True
             self.right_frames = self.right_fighting
             self.left_frames = self.left_fighting
-            
+
             if self.frame_index < max_frames_hit:
-                    self.frame_index += 1
+                self.frame_index += 1
 
             if self.frame_index == max_frames_hit:
                 self.state = "WALK"
 
         elif self.state == "WALK":
-            if self.flag == True:
-                self.frame_index = 0 
+            if self.flag:
+                self.frame_index = 0
                 self.flag = False
             self.right_frames = self.right_walking
             self.left_frames = self.left_walking
@@ -82,20 +82,20 @@ class Enemy(pygame.sprite.Sprite):
         """Анимация"""
         if self.direction == 'right':
             img = self.right_frames[self.frame_index]
-            self.image.blit(img, (0,0))
+            self.image.blit(img, (0, 0))
         else:
             img = self.left_frames[self.frame_index]
-            self.image.blit(img, (0,0))
+            self.image.blit(img, (0, 0))
 
 
 class Mushroom(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='mushroom', state = 'WALK'):
+    def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
+                 direction='left', name='mushroom', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
         self.x_vel = 1
         self.y_vel = 0
-        
 
     def setup_frames(self):
         """Вставка картинок под анимацию"""
@@ -107,14 +107,14 @@ class Mushroom(Enemy):
         self.left_fighting = []
         self.right_fighting = []
 
-
         for i in range(1, 10):
-            img = pygame.transform.scale(IMAGES["m_walk_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["m_walk_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_walking.append(img)
         for i in range(1, 5):
-            img = pygame.transform.scale(IMAGES["m_hit_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["m_hit_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_fighting.append(img)
-
 
         for image in self.left_walking:
             new_image = pygame.transform.flip(image, True, False)
@@ -124,15 +124,14 @@ class Mushroom(Enemy):
             new_image = pygame.transform.flip(image, True, False)
             self.right_fighting.append(new_image)
 
-
         self.right_frames = self.right_walking
         self.left_frames = self.left_walking
-        
 
 
 class Spider(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='spider', state = 'WALK'):
+    def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
+                 direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
         self.x_vel = 2
@@ -146,9 +145,10 @@ class Spider(Enemy):
         self.right_walking = []
 
         for i in range(1, 5):
-            img = pygame.transform.scale(IMAGES["s_walk_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["s_walk_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_walking.append(img)
-        
+
         for image in self.left_walking:
             new_image = pygame.transform.flip(image, True, False)
             self.right_walking.append(new_image)
@@ -156,9 +156,11 @@ class Spider(Enemy):
         self.right_frames = self.right_walking
         self.left_frames = self.left_walking
 
+
 class Cop(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='spider', state = 'WALK'):
+    def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
+                 direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
         self.x_vel = 3
@@ -167,14 +169,14 @@ class Cop(Enemy):
     def setup_frames(self):
         """Вставка картинок под анимацию"""
         self.frame_index = 0
-
         self.left_walking = []
         self.right_walking = []
 
         for i in range(1, 5):
-            img = pygame.transform.scale(IMAGES["r_walk_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["r_walk_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_walking.append(img)
-        
+
         for image in self.left_walking:
             new_image = pygame.transform.flip(image, True, False)
             self.right_walking.append(new_image)
@@ -182,25 +184,27 @@ class Cop(Enemy):
         self.right_frames = self.right_walking
         self.left_frames = self.left_walking
 
+
 class Granny(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='spider', state = 'WALK'):
+    def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
+                 direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
         self.x_vel = 2
-        self.y_vel = 0       
+        self.y_vel = 0
 
     def setup_frames(self):
         """Вставка картинок под анимацию"""
         self.frame_index = 0
-
         self.left_walking = []
         self.right_walking = []
 
         for i in range(1, 5):
-            img = pygame.transform.scale(IMAGES["b_walk_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["b_walk_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_walking.append(img)
-        
+
         for image in self.left_walking:
             new_image = pygame.transform.flip(image, True, False)
             self.right_walking.append(new_image)
@@ -208,9 +212,11 @@ class Granny(Enemy):
         self.right_frames = self.right_walking
         self.left_frames = self.left_walking
 
+
 class Bear(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='spider', state = 'WALK'):
+    def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
+                 direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
         self.x_vel = 1
@@ -224,9 +230,10 @@ class Bear(Enemy):
         self.right_walking = []
 
         for i in range(1, 5):
-            img = pygame.transform.scale(IMAGES["a_walk_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["a_walk_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_walking.append(img)
-        
+
         for image in self.left_walking:
             new_image = pygame.transform.flip(image, True, False)
             self.right_walking.append(new_image)
@@ -234,13 +241,15 @@ class Bear(Enemy):
         self.right_frames = self.right_walking
         self.left_frames = self.left_walking
 
+
 class Clown(Enemy):
 
-    def __init__(self, x=300, y= c.HEIGHT - c.HEIGHT_OF_GROUND, direction='left', name='spider', state = 'WALK'):
+    def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
+                 direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
         self.x_vel = 4
-        self.y_vel = 0        
+        self.y_vel = 0
 
     def setup_frames(self):
         """Вставка картинок под анимацию"""
@@ -250,13 +259,13 @@ class Clown(Enemy):
         self.right_walking = []
 
         for i in range(1, 5):
-            img = pygame.transform.scale(IMAGES["c_walk_" + str(i)], c.HERO_SIZE)                       
+            img = pygame.transform.scale(init.IMAGES["c_walk_"
+                                         + str(i)], c.HERO_SIZE)
             self.left_walking.append(img)
-        
+
         for image in self.left_walking:
             new_image = pygame.transform.flip(image, True, False)
             self.right_walking.append(new_image)
 
         self.right_frames = self.right_walking
         self.left_frames = self.left_walking
-
