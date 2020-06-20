@@ -11,12 +11,13 @@ import checkpoint
 from sprites import *
 from sounds import *
 
-# класс для состояния "лес"
-class Forest(State):          
+class Forest(State): 
+    """Класс для состояния лес"""         
     def __init__(self):
         State.__init__(self)
 
     def set_background(self):
+        """Устанавливает фоновое изображение, прямоугольник и масштабирует его до правильного размера"""
         self.background = IMAGES['forest']
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
@@ -31,7 +32,8 @@ class Forest(State):
         pygame.draw.rect(screen,(255,255,255),(600,300,100,50));
         
         
-    def on_create(self):  
+    def on_create(self):
+        """Вызывается при создании объекта"""   
         # self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
@@ -42,6 +44,7 @@ class Forest(State):
         self.set_spritegroups()
 
     def set_hero(self):
+        """Создание героя"""
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
@@ -51,6 +54,7 @@ class Forest(State):
 
 
     def set_coins(self):
+        """Создает все монетки для уровня"""
         coin0 = Coin(1360, 80)
         coin1 = Coin(1400, 80)
         coin2 = Coin(2080, 80)
@@ -78,6 +82,7 @@ class Forest(State):
                                         coin16, coin17, coin18, coin19)
 
     def set_blocks(self):
+        """Создает все блоки для уровня"""
         #self.ground = Barrier(0, c.HEIGHT_OF_GROUND, 3000, 40)
 
         block0 = Block(1360, 120, 'forest')
@@ -461,6 +466,7 @@ class Forest(State):
         
 
     def set_enemies(self):
+        """Создает врагов для уровня"""
         mushroom0 = enemies.Mushroom(3840, 320)
         mushroom_group0 = pygame.sprite.Group(mushroom0)
         mushroom1 = enemies.Mushroom(3000, 400)
@@ -497,6 +503,7 @@ class Forest(State):
 
 
     def set_checkpoints(self):
+        """Создает чекпоинты"""
         check1 = checkpoint.Checkpoint(110, "1")
         check2 = checkpoint.Checkpoint(2000, '2')
         check3 = checkpoint.Checkpoint(560, '3')
@@ -517,22 +524,25 @@ class Forest(State):
                                                      check12, check13, check14)
 
     def set_spritegroups(self):
+        """Создает группу спрайтов"""
         self.enemy_group = pygame.sprite.Group()
         self.hero_and_enemy_group = pygame.sprite.Group(self.hero,
                                                      self.enemy_group)
 
     def on_update(self, keys):
+        """ Обновляет весь уровень, используя состояния. Вызывается объектом управления"""
         self.update_everything(keys)
         self.blit_everything()
         self.update_viewport()
 
 
     def update_everything(self, keys):
+        """Обновляет местоположение всех спрайтов на экране"""
         self.hero.update(keys, {})
         self.info_coin.rect.x = self.viewport.x + 1000 - self.info_coin.w
         self.check_cp()
         self.info_coin.update()
-        for i in self.enemy_group:
+        for i in self.enemies:
             i.update(keys)
         self.sprite_positions()
         self.coins.update()
@@ -540,14 +550,18 @@ class Forest(State):
 
 
     def end_of_level(self):
+        """Конец уровня"""
         if self.hero.rect.x >= 4900:
             self.done = True
 
     def sprite_positions(self):
+        """Регулирует спрайты по их скоростям x и y и столкновению"""
         self.hero_position()
         self.enemy_position()
 
     def hero_position(self):
+        """Регулирует положение героя на основе его скоростей x, y и
+         потенциальные столкновения"""
         self.last_x_position = self.hero.rect.right
         self.hero.rect.x += round(self.hero.x_vel)
         self.x_collisions_hero()
@@ -560,6 +574,7 @@ class Forest(State):
 
 
     def x_collisions_hero(self):
+        """Проверяет наличие столкновений, когда герой движется вдоль оси X"""
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         coin = pygame.sprite.spritecollideany(self.hero, self.coins)
@@ -588,6 +603,7 @@ class Forest(State):
 
 
     def y_collisions_hero(self):
+        """Проверяет наличие столкновений, когда герой движется вдоль оси Y"""
         bricks = pygame.sprite.spritecollideany(self.hero, self.blocks)
         
         if bricks:
@@ -620,6 +636,7 @@ class Forest(State):
             self.y_collisions_enemy(i)
 
     def x_collisions_enemy(self, i):
+        """Проверяет наличие столкновений, когда враг движется вдоль оси X"""
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
         enemy = pygame.sprite.spritecollideany(self.hero, self.enemy_group)
         #coin = pygame.sprite.spritecollideany(self.enemy_group, self.coins)
@@ -663,7 +680,9 @@ class Forest(State):
                     i.direction = 'right'
             i.rect.y -= 1
 
+
     def blit_everything(self):
+        """Прорисовывает все спрайты на основную поверхность"""
         pygame.display.flip()
         self.level.blit(self.background, self.viewport, self.viewport)
         self.coins.draw(self.level)
@@ -676,7 +695,8 @@ class Forest(State):
         
 
     def check_cp(self):
-        ''' check check points'''
+        '''Определяет, если происходит столкновение контрольной точки, удаляет контрольную точку,
+         добавляет врагов в self.enemy_group'''
         checkpoint = pygame.sprite.spritecollideany(self.hero, self.check_point_group)
         if checkpoint:
             checkpoint.kill()
@@ -689,12 +709,14 @@ class Forest(State):
             self.hero_and_enemy_group.add(self.enemy_group)
     
     def get_event(self, event):
+        """Создает кнопку - слудующий уровень"""
         if event.type == pygame.MOUSEBUTTONDOWN:
             if pygame.mouse.get_pos()[0] >= 600 and pygame.mouse.get_pos()[1] >= 300:
                 if pygame.mouse.get_pos()[0] <= 700 and pygame.mouse.get_pos()[1] <= 350:
                     self.done = True
 
     def update_viewport(self):
+        """Меняет вид камеры"""
         if (self.viewport.x <= 4000):
             third = self.viewport.x + self.viewport.w//3
             play_center = self.hero.rect.centerx
