@@ -18,8 +18,9 @@ class Forest(State):
         self.next_state = "CITY"
 
     def set_background(self):
-       """Sets the background image, rect and scales it to the correct
+        """Sets the background image, rect and scales it to the correct
         proportions"""
+        self.background = IMAGES['forest']
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
         height = self.back_rect.height
