@@ -7,13 +7,16 @@ import const as c
 sys.path.append('..')
 
 
-# класс для состояния "меню"
 class MainMenu(State):
+    """Class Main menu"""
     def __init__(self):
+        """Initializes the state"""
         State.__init__(self)
         self.next_state = "CHOOSE_HERO"
 
     def on_create(self):
+        """Called every time the game's state becomes this one.  Initializes
+        certain values"""
         self.image = pygame.Surface(c.SCREEN_SIZE).convert()
         self.image_name = pygame.transform.scale(init.IMAGES["name_text"],
                                                  c.TEXT_SIZE)
@@ -37,6 +40,7 @@ class MainMenu(State):
                                             c.HEIGHT - c.START_HEIGHT))
 
     def on_update(self, keys):
+        """Updates the state every refresh"""
         pygame.display.flip()
         if self.clock == 25:
             if self.background_index < 5:
@@ -54,6 +58,7 @@ class MainMenu(State):
                                             c.HEIGHT - c.START_HEIGHT))
 
     def get_event(self, event):
+        """Creates a button - character selection"""
         t1 = c.HEIGHT - c.START_HEIGHT
         t2 = c.WIDTH / 2 + c.START_WIDTH
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -65,6 +70,7 @@ class MainMenu(State):
 
 
 class Hero_Choice(State):
+    """Class hero choice"""
     def __init__(self):
         State.__init__(self)
         self.next_state = "FOREST"

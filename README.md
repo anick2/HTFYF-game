@@ -27,19 +27,19 @@ _Что_ _вас_ _ждет:_
 
 #### Главное меню
 
-![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/main.png)
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/HTFYF/sources/readme/main.png)
 
 #### Уровень "Лес"
 
-![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/forest.png)
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/HTFYF/sources/readme/forest.png)
 
 #### Уровень "Город"
 
-![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/city.png)
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/HTFYF/sources/readme/city.png)
 
 #### Уровень "Парк развлечений"
 
-![Image alt](https://github.com/anick2/HTFYF-game/blob/master/sources/readme/park.png)
+![Image alt](https://github.com/anick2/HTFYF-game/blob/master/HTFYF/sources/readme/park.png)
 
 #### Управление
 
