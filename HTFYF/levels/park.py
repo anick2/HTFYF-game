@@ -32,7 +32,7 @@ class Park(State):
 
     def on_create(self):
         """Вызывается при создании объекта"""
-        self.sound_player = Sound("FOREST")
+        self.sound_player = Sound("PARK")
         self.set_background()
         self.set_hero()
         self.set_blocks()
@@ -44,7 +44,7 @@ class Park(State):
 
     def set_healing(self):
         """Прорисовка кнопки следующий уровень"""
-        bottle1 = Heal(200, 540)
+        bottle1 = Heal(200, 520)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):

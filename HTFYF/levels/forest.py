@@ -44,7 +44,7 @@ class Forest(State):
 
     def set_healing(self):
         """Create bottle"""
-        bottle1 = Heal(2040, 440)
+        bottle1 = Heal(2040, 420)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):
@@ -751,7 +751,6 @@ class Forest(State):
         """Checks for collisions when enemy moves along the y-axis"""
         bricks = pygame.sprite.spritecollideany(i, self.blocks)
         if bricks:
-            print(i.rect.y, bricks.rect.y)
             if i.rect.y > bricks.rect.y:
                 i.rect.y = bricks.rect.bottom
                 i.y_vel = 0
