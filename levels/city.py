@@ -29,7 +29,6 @@ class City(State):
         self.viewport = screen.get_rect(bottom=self.level_rect.bottom)
         self.level.blit(self.background, (0, 0))
         screen.blit(self.level, (0, 0), self.viewport)
-        pygame.draw.rect(screen, (255, 255, 255), (600, 300, 100, 50))
 
     def on_create(self):
         """Вызывается при создании объекта"""
@@ -44,8 +43,7 @@ class City(State):
         self.set_spritegroups()
 
     def set_healing(self):
-        """Прорисовка кнопки следующий уровень"""
-        bottle1 = Heal(200, 540)
+        bottle1 = Heal(1920, 120)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):
@@ -707,8 +705,7 @@ class City(State):
         self.blocks.draw(self.level)
         self.healing.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
-        screen.blit(self.level, (0, 0), self.viewport)
-        pygame.draw.rect(screen, (255, 255, 255), (600, 300, 100, 50))
+        screen.blit(self.level, (0,0), self.viewport)        
 
     def check_cp(self):
         '''Определяет, если происходит столкновение контрольной точки,
@@ -726,10 +723,10 @@ class City(State):
     def get_event(self, event):
         """Создает кнопку - слудующий уровень"""
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if pygame.mouse.get_pos()[0] >= 600 and\
-               pygame.mouse.get_pos()[1] >= 300:
-                if pygame.mouse.get_pos()[0] <= 700 and \
-                   pygame.mouse.get_pos()[1] <= 350:
+            if pygame.mouse.get_pos()[0] >= 900 and\
+               pygame.mouse.get_pos()[1] >= 50:
+                if pygame.mouse.get_pos()[0] <= 950 and \
+                   pygame.mouse.get_pos()[1] <= 100:
                     self.done = True
 
     def update_viewport(self):

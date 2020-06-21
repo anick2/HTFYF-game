@@ -97,7 +97,7 @@ class Info_hearts(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self)
         self.number = 3
         self.image = pygame.Surface((200, 70)).convert()
-        self.image.set_colorkey((255, 255, 255))
+        self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.x = 0
         self.rect.y = 0
@@ -105,7 +105,7 @@ class Info_hearts(pygame.sprite.Sprite):
     def update(self):
         img = pygame.transform.scale(init.IMAGES['hearts'
                                      + str(self.number)], (200, 70))
-        self.image.set_colorkey((255, 255, 255))
+        self.image.set_colorkey((0, 0, 0))
         self.image.blit(img, (0, 0))
 
 

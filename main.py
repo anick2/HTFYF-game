@@ -17,6 +17,9 @@ STATES = {"MAIN_MENU": levels.main_menu.MainMenu(),
 
 
 class Game:
+    """Class Game
+        Control class for entire project. Contains the game loop, and contains
+        the event_loop which passes events to States as needed."""
     def __init__(self):
         self.screen = init.screen
         self.keys = pygame.key.get_pressed()
@@ -84,6 +87,7 @@ class Game:
 
 
 def main():
+    """Add states to control here."""
     game = Game()
     first_state = "MAIN_MENU"
     game.setup_states(first_state)

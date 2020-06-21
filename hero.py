@@ -86,6 +86,9 @@ class Hero(pygame.sprite.Sprite):
         self.x_vel = 0
         self.y_vel = 0
 
+        if not keys[pygame.K_w]:
+            self.allow_jump = True
+
         if (self.state == "HIT_STAND"):
             if not self.flag:
                 self.frame_index = 0
@@ -123,6 +126,10 @@ class Hero(pygame.sprite.Sprite):
             self.y_vel = c.JUMP_VEL
 
     def walking(self, keys, fire_group):
+
+        if not keys[pygame.K_w]:
+            self.allow_jump = True
+
         if (self.state == "HIT_WALK"):
             if not self.flag:
                 self.frame_index = 0
