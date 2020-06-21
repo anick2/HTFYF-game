@@ -7,20 +7,20 @@ Main  modules
 .. automodule:: main
    :members:
 
-Level 1
--------
+Level 1, Level 2, Level 3
+---------------------------
 
 .. automodule:: levels.forest
    :members:
 
-Level 2
--------
+Hero module
+------------
 
-.. automodule:: levels.city
+.. automodule:: hero
    :members:
 
-Level 3
--------
+Enemy module
+------------
 
-.. automodule:: levels.park
+.. automodule:: enemies
    :members:

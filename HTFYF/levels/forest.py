@@ -12,6 +12,7 @@ sys.path.append('..')
 
 
 class Forest(State):
+    """Level class"""
     def __init__(self):
         """Called when the State object is created"""
         State.__init__(self)
@@ -31,7 +32,7 @@ class Forest(State):
         screen.blit(self.level, (0, 0), self.viewport)
 
     def on_create(self):
-        """Вызывается при создании объекта"""
+        """Called when an object is created"""
         self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()

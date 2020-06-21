@@ -12,14 +12,15 @@ sys.path.append('..')
 
 
 class City(State):
-    """Класс для состояния город"""
+    """Level class"""
     def __init__(self):
+        """Called when the State object is created"""
         State.__init__(self)
         self.next_state = "PARK"
 
     def set_background(self):
-        """Устанавливает фоновое изображение,
-           прямоугольник и масштабирует его до правильного размера"""
+        """Sets the background image, rect and scales it to the correct
+        proportions"""
         self.background = IMAGES['city']
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
@@ -31,7 +32,7 @@ class City(State):
         screen.blit(self.level, (0, 0), self.viewport)
 
     def on_create(self):
-        """Вызывается при создании объекта"""
+        """Called when an object is created"""
         self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
@@ -43,11 +44,12 @@ class City(State):
         self.set_spritegroups()
 
     def set_healing(self):
+        """Create bottle"""
         bottle1 = Heal(1920, 120)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):
-        """Создание героя"""
+        """Create hero"""
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
@@ -57,7 +59,7 @@ class City(State):
         self.info = pygame.sprite.Group(self.info_coin, self.info_hearts)
 
     def set_coins(self):
-        """Создает все монетки для уровня"""
+        """Creates all the coin and puts them in a sprite group"""
         coin0 = Coin(680, 40)
         coin1 = Coin(1920, 80)
         coin2 = Coin(2080, 80)
@@ -85,7 +87,7 @@ class City(State):
                                          coin16, coin17, coin18, coin19)
 
     def set_blocks(self):
-        """Создает все блоки для уровня"""
+        """Creates all the blocks for the level."""
         block0 = Block(2040, 120, 'city')
         block1 = Block(2080, 120, 'city')
         block2 = Block(2120, 120, 'city')
@@ -705,7 +707,7 @@ class City(State):
         self.blocks.draw(self.level)
         self.healing.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
-        screen.blit(self.level, (0,0), self.viewport)        
+        screen.blit(self.level, (0, 0), self.viewport)
 
     def check_cp(self):
         '''Определяет, если происходит столкновение контрольной точки,

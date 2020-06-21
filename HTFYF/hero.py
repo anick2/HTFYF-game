@@ -4,7 +4,7 @@ import init
 
 
 class Hero(pygame.sprite.Sprite):
-
+    """Hero class"""
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.state = "STAND"
@@ -60,10 +60,12 @@ class Hero(pygame.sprite.Sprite):
         self.gravity = c.GRAVITY
 
     def update(self, keys, fire_group):
+        """Updates Hero states and animations once per frame"""
         self.handle_state(keys, fire_group)
         self.animation()
 
     def handle_state(self, keys, fire_group):
+        """Determines Hero's behavior based on his state"""
         if keys[pygame.K_SPACE]:
             if self.state == "JUMP":
                 self.state = "HIT_FALL"
@@ -83,6 +85,7 @@ class Hero(pygame.sprite.Sprite):
             self.falling(keys, fire_group)
 
     def standing(self, keys, fire_group):
+        """This function is called if Mario is standing still"""
         self.x_vel = 0
         self.y_vel = 0
 
@@ -126,7 +129,7 @@ class Hero(pygame.sprite.Sprite):
             self.y_vel = c.JUMP_VEL
 
     def walking(self, keys, fire_group):
-
+        """This function is called when Hero is in a walking state"""
         if not keys[pygame.K_w]:
             self.allow_jump = True
 
@@ -205,6 +208,7 @@ class Hero(pygame.sprite.Sprite):
                     self.state = "STAND"
 
     def jumping(self, keys, fire_group):
+        """This function is called when Hero is in a jumping state"""
         self.allow_jump = False
         if (self.state == "HIT_JUMP"):
             if not self.flag:
@@ -273,6 +277,7 @@ class Hero(pygame.sprite.Sprite):
                 self.state = "HIT_FALL"
 
     def falling(self, keys, fire_group):
+        """This function is called when Hero is in a falling state"""
         if (self.state == "HIT_FALL"):
             if not self.flag:
                 self.frame_index = 0
@@ -318,6 +323,7 @@ class Hero(pygame.sprite.Sprite):
                 self.x_vel -= self.x_accel
 
     def animation(self):
+        """Hero's image for animation"""
         if self.facing_right:
             img = self.right_frames[self.frame_index]
             self.image.blit(img, (0, 0))

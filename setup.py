@@ -14,6 +14,5 @@ setup(
     url="https://github.com/anick2/HTFYF-game",
     install_requires=["pygame"],
     packages=find_packages(),
-	include_package_data=True
+    include_package_data=True
 )
-

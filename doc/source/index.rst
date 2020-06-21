@@ -11,7 +11,6 @@ Welcome to How To Fight Your Fears's documentation!
    :caption: Contents:
 
    installation
-   start
    code
 
 

@@ -4,12 +4,12 @@ import init
 
 
 class Enemy(pygame.sprite.Sprite):
-    """Класс врагов """
+    """Enemy class"""
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
 
     def setup_enemy(self, x, y, direction, name, setup_frames, state):
-        """Описание врагов"""
+        """Sets up various values for enemy"""
         self.right_frames = []
         self.right_frames = []
         self.frame_index = 0
@@ -26,12 +26,12 @@ class Enemy(pygame.sprite.Sprite):
         self.rect.bottom = y
 
     def update(self, game_info, *args):
-        """Обновление состояния врагов"""
+        """Updates enemy behavior"""
         self.handle_state()
         self.animation()
 
     def handle_state(self):
-        """Установка состояния врагов"""
+        """Enemy behavior based on state"""
         if self.state == "WALK" or self.state == "HIT_WALK":
             self.walking()
 
@@ -39,7 +39,7 @@ class Enemy(pygame.sprite.Sprite):
             self.falling()
 
     def walking(self):
-        """Хоdьба"""
+        """Default state of moving sideways"""
         if self.name == 'mushroom':
             max_frames_hit = 3
             max_frames_walk = 8
@@ -79,7 +79,7 @@ class Enemy(pygame.sprite.Sprite):
         pass
 
     def animation(self):
-        """Анимация"""
+        """Basic animation, switching between two frames"""
         if self.direction == 'right':
             img = self.right_frames[self.frame_index]
             self.image.blit(img, (0, 0))
@@ -89,7 +89,7 @@ class Enemy(pygame.sprite.Sprite):
 
 
 class Mushroom(Enemy):
-
+    """Mushroom class"""
     def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
                  direction='left', name='mushroom', state='WALK'):
         Enemy.__init__(self)
@@ -98,7 +98,6 @@ class Mushroom(Enemy):
         self.y_vel = 0
 
     def setup_frames(self):
-        """Вставка картинок под анимацию"""
         self.frame_index = 0
 
         self.left_walking = []
@@ -129,7 +128,7 @@ class Mushroom(Enemy):
 
 
 class Spider(Enemy):
-
+    """Spider class"""
     def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
@@ -138,7 +137,6 @@ class Spider(Enemy):
         self.y_vel = 0
 
     def setup_frames(self):
-        """Вставка картинок под анимацию"""
         self.frame_index = 0
 
         self.left_walking = []
@@ -158,7 +156,7 @@ class Spider(Enemy):
 
 
 class Cop(Enemy):
-
+    """Cop class"""
     def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
@@ -167,7 +165,6 @@ class Cop(Enemy):
         self.y_vel = 0
 
     def setup_frames(self):
-        """Вставка картинок под анимацию"""
         self.frame_index = 0
         self.left_walking = []
         self.right_walking = []
@@ -186,7 +183,7 @@ class Cop(Enemy):
 
 
 class Granny(Enemy):
-
+    """Granny class"""
     def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
@@ -195,7 +192,6 @@ class Granny(Enemy):
         self.y_vel = 0
 
     def setup_frames(self):
-        """Вставка картинок под анимацию"""
         self.frame_index = 0
         self.left_walking = []
         self.right_walking = []
@@ -214,16 +210,15 @@ class Granny(Enemy):
 
 
 class Bear(Enemy):
-
+    """Bear class"""
     def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
-        self.x_vel = 1
+        self.x_vel = 2
         self.y_vel = 0
 
     def setup_frames(self):
-        """Вставка картинок под анимацию"""
         self.frame_index = 0
 
         self.left_walking = []
@@ -243,16 +238,15 @@ class Bear(Enemy):
 
 
 class Clown(Enemy):
-
+    """Clown class"""
     def __init__(self, x=300, y=c.HEIGHT - c.HEIGHT_OF_GROUND,
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
-        self.x_vel = 4
+        self.x_vel = 1
         self.y_vel = 0
 
     def setup_frames(self):
-        """Вставка картинок под анимацию"""
         self.frame_index = 0
 
         self.left_walking = []

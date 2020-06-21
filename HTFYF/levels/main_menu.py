@@ -113,7 +113,6 @@ class Hero_Choice(State):
         self.surf = pygame.Surface((280, 400))
         self.surf.set_alpha(128)
         self.surf.fill((200, 162, 200))
-        
         self.hero1 = 1
         self.hero2 = 0
         c.HERO_TYPE = 's'
@@ -142,8 +141,9 @@ class Hero_Choice(State):
 
         init.screen.blit(self.image_second, (710, 100))
 
-        init.screen.blit(self.image_choose, (c.WIDTH / 2 - c.CHOOSE_WIDTH / 2,
-                                             c.HEIGHT / 2 - c.CHOOSE_HEIGHT / 2))
+        init.screen.blit(self.image_choose,
+                         (c.WIDTH / 2 - c.CHOOSE_WIDTH / 2,
+                          c.HEIGHT / 2 - c.CHOOSE_HEIGHT / 2))
 
     def get_event(self, event):
 

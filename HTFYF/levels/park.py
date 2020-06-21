@@ -12,14 +12,14 @@ sys.path.append('..')
 
 
 class Park(State):
-    """Класс для состояния парк"""
+    """Level class"""
     def __init__(self):
         State.__init__(self)
         self.next_state = "MAIN_MENU"
 
     def set_background(self):
-        """Устанавливает фоновое изображение,
-           прямоугольник и масштабирует его до правильного размера"""
+        """Sets the background image, rect and scales it to the correct
+        proportions"""
         self.background = IMAGES['park']
         self.back_rect = self.background.get_rect()
         width = self.back_rect.width
@@ -28,10 +28,10 @@ class Park(State):
         self.level_rect = self.level.get_rect()
         self.viewport = screen.get_rect(bottom=self.level_rect.bottom)
         self.level.blit(self.background, (0, 0))
-        screen.blit(self.level, (0,0), self.viewport)
+        screen.blit(self.level, (0, 0), self.viewport)
 
     def on_create(self):
-        """Вызывается при создании объекта"""
+        """Called when an object is created"""
         self.sound_player = Sound("FOREST")
         self.set_background()
         self.set_hero()
@@ -43,12 +43,12 @@ class Park(State):
         self.set_spritegroups()
 
     def set_healing(self):
-        """Прорисовка кнопки следующий уровень"""
+        """Create bottle"""
         bottle1 = Heal(200, 540)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):
-        """Создание героя"""
+        """Create hero"""
         self.hero = hero.Hero()
         self.hero.rect.x = self.viewport.x + 110
         self.hero.rect.bottom = 560
@@ -58,7 +58,7 @@ class Park(State):
         self.info = pygame.sprite.Group(self.info_coin, self.info_hearts)
 
     def set_coins(self):
-        """Создает все монетки для уровня"""
+        """Creates all the coin and puts them in a sprite group"""
         coin0 = Coin(1840, 40)
         coin1 = Coin(2680, 40)
         coin2 = Coin(600, 80)
@@ -86,7 +86,7 @@ class Park(State):
                                          coin16, coin17, coin18, coin19)
 
     def set_blocks(self):
-        """Создает все блоки для уровня"""
+        """Creates all the blocks for the level."""
         block0 = Block(1080, 40, 'park')
         block1 = Block(2640, 40, 'park')
         block2 = Block(1080, 80, 'park')
@@ -773,12 +773,11 @@ class Park(State):
         self.blocks.draw(self.level)
         self.healing.draw(self.level)
         self.hero_and_enemy_group.draw(self.level)
-        screen.blit(self.level, (0,0), self.viewport)        
-
+        screen.blit(self.level, (0, 0), self.viewport)
 
     def check_cp(self):
-        '''Определяет, если происходит столкновение контрольной точки,
-           удаляет контрольную точку,
+        '''Определяет, если происходит столкновение
+           контрольной точки, удаляет контрольную точку,
            добавляет врагов в self.enemy_group'''
         checkpoint = pygame.sprite.spritecollideany(self.hero,
                                                     self.check_point_group)
