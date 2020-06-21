@@ -33,7 +33,7 @@ class City(State):
 
     def on_create(self):
         """Called when an object is created"""
-        self.sound_player = Sound("FOREST")
+        self.sound_player = Sound("CITY")
         self.set_background()
         self.set_hero()
         self.set_blocks()
@@ -45,7 +45,7 @@ class City(State):
 
     def set_healing(self):
         """Create bottle"""
-        bottle1 = Heal(1920, 120)
+        bottle1 = Heal(1920, 100)
         self.healing = pygame.sprite.Group(bottle1)
 
     def set_hero(self):

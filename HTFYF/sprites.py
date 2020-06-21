@@ -96,15 +96,15 @@ class Info_hearts(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
         self.number = 3
-        self.image = pygame.Surface((200, 70)).convert()
+        self.image = pygame.Surface((180, 60)).convert()
         self.image.set_colorkey((0, 0, 0))
         self.rect = self.image.get_rect()
         self.rect.x = 0
-        self.rect.y = 0
+        self.rect.y = 10
 
     def update(self):
         img = pygame.transform.scale(init.IMAGES['hearts'
-                                     + str(self.number)], (200, 70))
+                                     + str(self.number)], (180, 60))
         self.image.set_colorkey((0, 0, 0))
         self.image.blit(img, (0, 0))
 
@@ -113,11 +113,11 @@ class Heal(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.image = pygame.Surface((20, 30)).convert()
+        self.image = pygame.Surface((40, 50)).convert()
         self.rect = self.image.get_rect()
-        img = pygame.transform.scale(init.IMAGES['bottle'], (20, 30))
-        img.set_colorkey((255, 255, 255))
-        self.image.set_colorkey((255, 255, 255))
+        img = pygame.transform.scale(init.IMAGES['bottle'], (35, 40))
+        img.set_colorkey((0, 0, 0))
+        self.image.set_colorkey((0, 0, 0))
         self.image.blit(img, (0, 0))
         self.rect.x = x
         self.rect.y = y

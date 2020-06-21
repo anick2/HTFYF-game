@@ -7,7 +7,7 @@ CAPTION = "HowToFightYourFears"
 
 HEIGHT_OF_GROUND = 40
 
-HERO_SIZE = 30, 65
+HERO_SIZE = 35, 60
 
 BLOCK_SIZE = 40, 40
 

@@ -22,3 +22,7 @@ class Sound():
         elif self.game_state == "PARK":
             pygame.mixer.music.load(self.music['park'])
             pygame.mixer.music.play()
+
+        elif self.game_state == "MAIN_MENU":
+            pygame.mixer.music.load(self.music['menu'])
+            pygame.mixer.music.play()

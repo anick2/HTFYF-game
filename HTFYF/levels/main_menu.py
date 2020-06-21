@@ -3,6 +3,7 @@ import pygame
 from .state import State
 import init
 import const as c
+from sounds import Sound
 
 sys.path.append('..')
 
@@ -17,6 +18,7 @@ class MainMenu(State):
     def on_create(self):
         """Called every time the game's state becomes this one.  Initializes
         certain values"""
+        self.sound_player = Sound("MAIN_MENU")
         self.image = pygame.Surface(c.SCREEN_SIZE).convert()
         self.image_name = pygame.transform.scale(init.IMAGES["name_text"],
                                                  c.TEXT_SIZE)

@@ -94,6 +94,11 @@ class Mushroom(Enemy):
                  direction='left', name='mushroom', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
+        self.image = pygame.Surface((50, 80)).convert()
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.bottom = y
         self.x_vel = 1
         self.y_vel = 0
 
@@ -108,11 +113,11 @@ class Mushroom(Enemy):
 
         for i in range(1, 10):
             img = pygame.transform.scale(init.IMAGES["m_walk_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (50, 80))
             self.left_walking.append(img)
         for i in range(1, 5):
             img = pygame.transform.scale(init.IMAGES["m_hit_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (50, 80))
             self.left_fighting.append(img)
 
         for image in self.left_walking:
@@ -133,6 +138,11 @@ class Spider(Enemy):
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
+        self.image = pygame.Surface((70, 50)).convert()
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.bottom = y
         self.x_vel = 2
         self.y_vel = 0
 
@@ -144,7 +154,7 @@ class Spider(Enemy):
 
         for i in range(1, 5):
             img = pygame.transform.scale(init.IMAGES["s_walk_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (70, 50))
             self.left_walking.append(img)
 
         for image in self.left_walking:
@@ -161,6 +171,11 @@ class Cop(Enemy):
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
+        self.image = pygame.Surface((80, 90)).convert()
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.bottom = y
         self.x_vel = 3
         self.y_vel = 0
 
@@ -171,7 +186,7 @@ class Cop(Enemy):
 
         for i in range(1, 5):
             img = pygame.transform.scale(init.IMAGES["r_walk_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (80, 90))
             self.left_walking.append(img)
 
         for image in self.left_walking:
@@ -188,6 +203,11 @@ class Granny(Enemy):
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
+        self.image = pygame.Surface((60, 80)).convert()
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.bottom = y
         self.x_vel = 2
         self.y_vel = 0
 
@@ -198,7 +218,7 @@ class Granny(Enemy):
 
         for i in range(1, 5):
             img = pygame.transform.scale(init.IMAGES["b_walk_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (60, 80))
             self.left_walking.append(img)
 
         for image in self.left_walking:
@@ -215,7 +235,12 @@ class Bear(Enemy):
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
-        self.x_vel = 2
+        self.image = pygame.Surface((65, 80)).convert()
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.bottom = y
+        self.x_vel = 1
         self.y_vel = 0
 
     def setup_frames(self):
@@ -226,7 +251,7 @@ class Bear(Enemy):
 
         for i in range(1, 5):
             img = pygame.transform.scale(init.IMAGES["a_walk_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (65, 80))
             self.left_walking.append(img)
 
         for image in self.left_walking:
@@ -243,7 +268,12 @@ class Clown(Enemy):
                  direction='left', name='spider', state='WALK'):
         Enemy.__init__(self)
         self.setup_enemy(x, y, direction, name, self.setup_frames, state)
-        self.x_vel = 1
+        self.image = pygame.Surface((100, 80)).convert()
+        self.image.set_colorkey((0, 0, 0))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.bottom = y
+        self.x_vel = 4
         self.y_vel = 0
 
     def setup_frames(self):
@@ -254,7 +284,7 @@ class Clown(Enemy):
 
         for i in range(1, 5):
             img = pygame.transform.scale(init.IMAGES["c_walk_"
-                                         + str(i)], c.HERO_SIZE)
+                                         + str(i)], (100, 80))
             self.left_walking.append(img)
 
         for image in self.left_walking:
