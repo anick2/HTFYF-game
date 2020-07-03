@@ -6,6 +6,7 @@ import levels.state
 import levels.park
 import levels.main_menu
 import init
+import time
 
 
 STATES = {"MAIN_MENU": levels.main_menu.MainMenu(),
@@ -82,6 +83,7 @@ class Game:
     def mainloop(self):
         while not self.done:
             self.event_loop()
+            time.sleep(0.001)
             self.update()
         self.clock.tick(self.fps)
 
